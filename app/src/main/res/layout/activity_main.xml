@@ -4,15 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fdf8f2"
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/welcomeTextView"
+        android:layout_width="158dp"
+        android:layout_height="56dp"
+        android:fontFamily="@font/marcellus"
+        android:text="Welcome"
+        android:textColor="#745342"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.128" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="248dp"
+        android:layout_height="54dp"
+        android:text="Set your targets"
+        app:backgroundTint="#745342"
+        tools:layout_editor_absoluteX="83dp"
+        tools:layout_editor_absoluteY="399dp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="245dp"
+        android:layout_height="50dp"
+        android:text="Walks"
+        app:backgroundTint="#745342"
+        tools:layout_editor_absoluteX="83dp"
+        tools:layout_editor_absoluteY="478dp" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="248dp"
+        android:layout_height="50dp"
+        android:text="Settings"
+        app:backgroundTint="#745342"
+        tools:layout_editor_absoluteX="83dp"
+        tools:layout_editor_absoluteY="548dp" />
+
+    <TextView
+        android:id="@+id/sunriseTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Sunrise"
+        tools:layout_editor_absoluteX="39dp"
+        tools:layout_editor_absoluteY="169dp" />
 
+    <TextView
+        android:id="@+id/sunsetTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sunset"
+        tools:layout_editor_absoluteX="152dp"
+        tools:layout_editor_absoluteY="169dp" />
+
+    <TextView
+        android:id="@+id/sunlightTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sunlight left"
+        tools:layout_editor_absoluteX="253dp"
+        tools:layout_editor_absoluteY="169dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
