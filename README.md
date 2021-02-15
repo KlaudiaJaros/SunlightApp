@@ -1,4 +1,6 @@
 # SunlightApp
+![alt text](/app/src/main/res/drawable/logo_2.png?raw=true)
+
 Android Mobile Application developed for Mobile Applications Development module TR1 2021
 
 ### Description
