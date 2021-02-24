@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fdf8f2">
+
+    <TextView
+        android:id="@+id/settingsTextView"
+        android:layout_width="158dp"
+        android:layout_height="56dp"
+        android:fontFamily="@font/marcellus"
+        android:text="@string/settingsStr"
+        android:textColor="#745342"
+        android:textSize="36sp"
+        android:layout_gravity="center"
+        android:layout_margin="30dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="@font/marcellus"
+            android:text="@string/yourNameStr"
+            android:textColor="#432F2F"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/userNameValue"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:textColor="#432F2F"
+            android:textSize="18sp"
+            android:layout_marginLeft="18dp"/>
+
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/marcellus"
+        android:text="@string/targetSummaryStr"
+        android:textColor="#432F2F"
+        android:textSize="18sp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="69dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="@font/marcellus"
+            android:text="@string/targetStr"
+            android:textColor="#432F2F"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/userTargetValue"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:fontFamily="@font/marcellus"
+            android:textColor="#432F2F"
+            android:textSize="18sp"
+            android:layout_marginLeft="10dp"/>
+
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:fontFamily="@font/marcellus"
+            android:textColor="#432F2F"
+            android:textSize="18sp"
+            android:text="@string/minStr"
+            android:layout_marginLeft="10dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/marcellus"
+        android:text="@string/notificationsStr"
+        android:textColor="#432F2F"
+        android:textSize="18sp"
+        android:layout_marginTop="10dp"/>
+
+
+    <Switch
+        android:id="@+id/notificationsSwitch"
+        android:layout_width="366dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:checked="true"
+        android:fontFamily="@font/marcellus"
+        android:text="@string/receiveNotificationsStr"
+        android:textColor="#432F2F"
+        android:textSize="18sp" />
+
+</LinearLayout>

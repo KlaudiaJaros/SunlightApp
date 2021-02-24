@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sunlight</string>
+    <string name="welcomeStr">Witaj</string>
+    <string name="sunriseStr">Wschód słońca:</string>
+    <string name="sunsetStr">Zachód:</string>
+    <string name="sunlightLeftStr">Godziny do zmroku:</string>
+    <string name="weatherStr">Pogoda w:</string>
+    <string name="targetsStr">Ustaw swój cel</string>
+    <string name="walksStr">Spacery</string>
+    <string name="settingsStr">Ustawienia</string>
+    <string name="targetStr">Twój dzienny cel:</string>
+    <string name="targetRemainingStr">Pozostało:</string>
+    <string name="currentSunriseStr">7:10 am</string>
+    <string name="currentSunsetStr">8:25 pm</string>
+    <string name="currentSunlightLeftStr">4</string>
+    <string name="currentTargetStr">3</string>
+    <string name="remainingTargetStr">2</string>
+    <string name="aboutStr">Więcej</string>
+    <string name="targetSummaryStr">wypelnij</string>
+    <string name="yourNameStr">Twoje imie:</string>
+    <string name="notificationsStr">Notifications</string>
+
+</resources>

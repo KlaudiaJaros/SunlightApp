@@ -1,75 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fdf8f2"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    android:background="#fdf8f2">
 
     <TextView
         android:id="@+id/welcomeTextView"
         android:layout_width="158dp"
         android:layout_height="56dp"
         android:fontFamily="@font/marcellus"
-        android:text="Welcome"
+        android:text="@string/welcomeStr"
         android:textColor="#745342"
         android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.128" />
+        android:layout_gravity="center"
+        android:layout_margin="30dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/sunriseTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:fontFamily="@font/marcellus"
+            android:text="@string/sunriseStr"
+            android:textColor="#432F2F" />
+
+        <TextView
+            android:id="@+id/sunriseValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="@font/marcellus"
+            android:text="@string/currentSunriseStr"
+            android:textColor="#432F2F" />
+
+        <TextView
+            android:id="@+id/sunsetTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="@font/marcellus"
+            android:text="@string/sunsetStr"
+            android:textColor="#432F2F" />
+
+        <TextView
+            android:id="@+id/sunsetValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="@font/marcellus"
+            android:text="@string/currentSunsetStr"
+            android:textColor="#432F2F" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/sunlightTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:fontFamily="@font/marcellus"
+            android:text="@string/sunlightLeftStr"
+            android:textColor="#432F2F" />
+
+        <TextView
+            android:id="@+id/sunlightLeftValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="@font/marcellus"
+            android:text="@string/currentSunlightLeftStr"
+            android:textColor="#432F2F" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/targetTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:fontFamily="@font/marcellus"
+            android:text="@string/targetStr"
+            android:textColor="#432F2F" />
+
+        <TextView
+            android:id="@+id/dailyTargetValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="@font/marcellus"
+            android:text="@string/currentTargetStr"
+            android:textColor="#432F2F" />
+
+        <TextView
+            android:id="@+id/targetSummaryTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:fontFamily="@font/marcellus"
+            android:text="@string/targetRemainingStr"
+            android:textColor="#432F2F" />
+
+        <TextView
+            android:id="@+id/remainingTargetValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="@font/marcellus"
+            android:text="@string/remainingTargetStr"
+            android:textColor="#432F2F" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/weatherTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:fontFamily="@font/marcellus"
+            android:text="@string/weatherStr"
+            android:textColor="#432F2F" />
+
+        <TextView
+            android:id="@+id/locationValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="@font/marcellus"
+            android:text="location"
+            android:textColor="#432F2F" />
+
+    </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/aboutButton"
         android:layout_width="248dp"
         android:layout_height="54dp"
-        android:text="Set your targets"
-        app:backgroundTint="#745342"
-        tools:layout_editor_absoluteX="83dp"
-        tools:layout_editor_absoluteY="399dp" />
+        android:layout_gravity="center"
+        android:backgroundTint="#745342"
+        android:fontFamily="@font/marcellus"
+        android:text="@string/aboutStr" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="245dp"
-        android:layout_height="50dp"
-        android:text="Walks"
-        app:backgroundTint="#745342"
-        tools:layout_editor_absoluteX="83dp"
-        tools:layout_editor_absoluteY="478dp" />
-
-    <Button
-        android:id="@+id/button3"
+        android:id="@+id/walksButton"
         android:layout_width="248dp"
-        android:layout_height="50dp"
-        android:text="Settings"
-        app:backgroundTint="#745342"
-        tools:layout_editor_absoluteX="83dp"
-        tools:layout_editor_absoluteY="548dp" />
+        android:layout_height="54dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#745342"
+        android:fontFamily="@font/marcellus"
+        android:text="@string/walksStr" />
 
-    <TextView
-        android:id="@+id/sunriseTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sunrise"
-        tools:layout_editor_absoluteX="39dp"
-        tools:layout_editor_absoluteY="169dp" />
+    <Button
+        android:id="@+id/settingsButton"
+        android:layout_width="248dp"
+        android:layout_height="54dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#745342"
+        android:fontFamily="@font/marcellus"
+        android:text="@string/settingsStr" />
 
-    <TextView
-        android:id="@+id/sunsetTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sunset"
-        tools:layout_editor_absoluteX="152dp"
-        tools:layout_editor_absoluteY="169dp" />
-
-    <TextView
-        android:id="@+id/sunlightTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sunlight left"
-        tools:layout_editor_absoluteX="253dp"
-        tools:layout_editor_absoluteY="169dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
