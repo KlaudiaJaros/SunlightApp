@@ -11,10 +11,6 @@
     <string name="settingsStr">Ustawienia</string>
     <string name="targetStr">Twój dzienny cel:</string>
     <string name="targetRemainingStr">Pozostało:</string>
-    <string name="currentSunriseStr">7:10 am</string>
-    <string name="currentSunsetStr">8:25 pm</string>
-    <string name="currentSunlightLeftStr">4</string>
-    <string name="currentTargetStr">3</string>
     <string name="remainingTargetStr">2</string>
     <string name="yourNameStr">Twoje imię:</string>
     <string name="notificationsStr">Powiadomienia</string>
@@ -28,5 +24,7 @@
     <string name="walksInfoStr">Spacery na podstawie Twojej lokalizacji:</string>
     <string name="channel_name">SunlightSpacer</string>
     <string name="channel_description">Przypomnienia o pójciu na spacer</string>
+    <string name="tempStr">Temperatura:</string>
+    <string name="notSetStr">zero</string>
 
 </resources>

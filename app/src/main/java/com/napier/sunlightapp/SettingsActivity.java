@@ -1,6 +1,5 @@
 package com.napier.sunlightapp;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -29,7 +28,6 @@ public class SettingsActivity extends AppCompatActivity {
     private final String filename = "userSettings.csv";
     private final String filename2 = "notificationsSettings.txt";
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,23 +122,25 @@ public class SettingsActivity extends AppCompatActivity {
     /**
      * Loads saved settings from internal storage files
      */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void loadSettings(){
         /* Read from a file located in the internal storage directory provided by the system for this and only this app: */
 
         // using FileInputStream, try to open the app's file:
         FileInputStream fis = null;
+        InputStreamReader inputStreamReader = null;
         try {
             fis = this.openFileInput(filename);
+            // read from the file using InputStreamReader:
+            inputStreamReader =
+                    new InputStreamReader(fis, StandardCharsets.UTF_8);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        // read from the file using InputStreamReader:
-        InputStreamReader inputStreamReader =
-                new InputStreamReader(fis, StandardCharsets.UTF_8);
 
-        try (BufferedReader reader = new BufferedReader(inputStreamReader)) {
+
+        try {
+            BufferedReader reader = new BufferedReader(inputStreamReader);
             String line = reader.readLine();
             // if the file is not empty, get the username and the target:
             if (line != null) {
@@ -148,7 +148,7 @@ public class SettingsActivity extends AppCompatActivity {
                 userName=words[0];
                 target=words[1];
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             // Error occurred when opening raw file for reading.
         }
 
@@ -164,7 +164,8 @@ public class SettingsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        try (BufferedReader reader = new BufferedReader(inputStreamReader)) {
+        try {
+            BufferedReader reader = new BufferedReader(inputStreamReader);
             String line = reader.readLine();
             if (line != null && line.equals("true")) {
                 notificationsEnabled=true;
@@ -172,7 +173,7 @@ public class SettingsActivity extends AppCompatActivity {
             else if (line!=null && line.equals("false")){
                 notificationsEnabled=false;
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             // Error occurred when opening raw file for reading.
         }
         Switch notifications = (Switch)findViewById(R.id.notificationsSwitch);

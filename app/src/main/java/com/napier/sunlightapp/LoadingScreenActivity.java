@@ -24,7 +24,6 @@ public class LoadingScreenActivity extends AppCompatActivity {
         progressBar.setProgress(0);
 
 
-        ImageView logo = (ImageView) findViewById(R.id.logoView);
             new Handler().postDelayed(new Runnable(){
                 public void run() {
                     progressBar.setProgress(100);

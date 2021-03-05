@@ -1,6 +1,5 @@
 package com.napier.sunlightapp;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -23,9 +22,21 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.type.DateTime;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -33,8 +44,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private final String filename2 = "notificationsSettings.txt";
 
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +100,11 @@ public class MainActivity extends AppCompatActivity {
 
                     Toast.makeText(getBaseContext(), locationString, Toast.LENGTH_LONG).show();
                     setCity();
+                    try {
+                        connectWeatherAPI();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -140,33 +160,31 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        /*try {
-            connectWeatherAPI();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+
     }
 
     /**
      * Reads from the userSettings file and applies user settings to the Activity
      */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void applyUserSettings(){
         /* Read from a file located in the internal storage directory provided by the system for this and only this app: */
 
         // using FileInputStream, try to open the app's file:
         FileInputStream fis = null;
+        InputStreamReader inputStreamReader = null;
         try {
             fis = this.openFileInput(filename);
+            // read from the file using InputStreamReader:
+            inputStreamReader =
+                    new InputStreamReader(fis, StandardCharsets.UTF_8);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        // read from the file using InputStreamReader:
-        InputStreamReader inputStreamReader =
-                new InputStreamReader(fis, StandardCharsets.UTF_8);
 
-        try (BufferedReader reader = new BufferedReader(inputStreamReader)) {
+
+        try {
+            BufferedReader reader = new BufferedReader(inputStreamReader);
             String line = reader.readLine();
             // if the file is not empty, get the username and the target:
             if (line != null) {
@@ -174,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
                 userName=words[0];
                 target=words[1];
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             // Error occurred when opening raw file for reading.
         }
 
@@ -202,7 +220,8 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        try (BufferedReader reader = new BufferedReader(inputStreamReader)) {
+        try {
+            BufferedReader reader = new BufferedReader(inputStreamReader);
             String line = reader.readLine();
             if (line != null && line.equals("true")) {
                 notificationsEnabled=true;
@@ -210,10 +229,17 @@ public class MainActivity extends AppCompatActivity {
             else if (line!=null && line.equals("false")){
                 notificationsEnabled=false;
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             // Error occurred when opening raw file for reading.
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent loadActivity = new Intent(MainActivity.this, LoadingScreenActivity.class);
+        startActivity(loadActivity);
     }
 
     /**
@@ -307,8 +333,8 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void aboutButtonOnClick(View view) {
-        Intent settingsActivity = new Intent(MainActivity.this, SettingsActivity.class);
-        startActivity(settingsActivity);
+        Intent aboutActivity = new Intent(MainActivity.this, AboutActivity.class);
+        startActivity(aboutActivity);
     }
 
     /**
@@ -333,21 +359,105 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /*private void connectWeatherAPI() throws IOException {
+    private void connectWeatherAPI() throws IOException {
+
+        // to edit activity elements:
+        TextView tempEdit = (TextView)findViewById(R.id.tempValue);
+        TextView minTempEdit = (TextView)findViewById(R.id.minTempValue);
+        TextView maxTempEdit = (TextView)findViewById(R.id.maxTempValue);
+        TextView sunriseEdit = (TextView) findViewById(R.id.sunriseValue);
+        TextView sunsetEdit = (TextView)findViewById(R.id.sunsetValue);
+        TextView sunlightLeftEdit = (TextView)findViewById(R.id.sunlightLeftValue);
+
+        // url to OpenWeatherMap API:
+        String url = "https://api.openweathermap.org/data/2.5/weather?lat=" +lat+ "&lon=" + lon + "&appid=38ed18e5f6d4211046e1cf89af573e7a&units=metric";
+        // open a request for a JSON object:
+        JsonObjectRequest jor = new JsonObjectRequest(Request.Method.GET, url, null, new com.android.volley.Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONObject mainObj = response.getJSONObject("main"); // for temperatures
+                    JSONObject sysObj = response.getJSONObject("sys"); // for sunset/sunrise
+
+                    JSONArray array=response.getJSONArray("weather");
+                    JSONObject object = array.getJSONObject(0);
+
+                    // get the weather information from the response:
+                    String temp = String.valueOf(mainObj.getDouble("temp"));
+                    String minTemp=String.valueOf(mainObj.getDouble("temp_min"));
+                    String maxTemp=String.valueOf(mainObj.getDouble("temp_max"));
+                    String description = object.getString("description");
+                    String city = response.getString("name");
+
+
+                    long sunrise = sysObj.getLong("sunrise");
+                    long sunset = sysObj.getLong("sunset");
+
+                    Calendar calendar = Calendar.getInstance();
+                    long currentTime = calendar.getTimeInMillis();
+                    long difference = sunset*1000 - currentTime;
+
+                    calendar.setTimeInMillis(sunrise*1000); // times 1000 because the time stamp is in milliseconds
+                    String sunriseTime = calendar.get(Calendar.HOUR) + "." + calendar.get(Calendar.MINUTE) + " am";
+
+                    calendar.setTimeInMillis(sunset*1000);
+                    String sunsetTime = calendar.get(Calendar.HOUR) + "." + calendar.get(Calendar.MINUTE) + " pm";
+
+
+                    System.out.println("Sunrise: " + sunriseTime + ", sunset: " + sunsetTime + ", current time: " + currentTime + ", difference: " + difference);
+
+
+                    tempEdit.setText(temp+" C");
+                    minTempEdit.setText(minTemp+" C");
+                    maxTempEdit.setText(maxTemp+" C");
+                    sunriseEdit.setText(sunriseTime);
+                    sunsetEdit.setText(sunsetTime);
+
+                    difference=difference/1000;
+                    float minuteDifference = difference/60;
+                    if (minuteDifference>=60 && currentTime>=(sunrise*1000)) {
+                        String differenceStr = String.valueOf(minuteDifference/60) + " hour/min";
+                        sunlightLeftEdit.setText(differenceStr);
+                    }
+                    else if (minuteDifference>0 && currentTime>=(sunrise*1000)){
+                        int minutes = (int)minuteDifference;
+                        String differenceStr = String.valueOf(minutes) + " min/s";
+                        sunlightLeftEdit.setText(differenceStr);
+                    }
+                    else{
+
+                        sunlightLeftEdit.setText("0");
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }
+    );
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(jor);
+
+
+        /*
         OkHttpClient client = new OkHttpClient();
 
-        Request APIrequest = new Request.Builder()
+        Request request = new Request.Builder()
                 .url("https://community-open-weather-map.p.rapidapi.com/weather?q=London%2Cuk&lat=0&lon=0&callback=test&id=2172797&lang=null&units=%22metric%22%20or%20%22imperial%22&mode=xml%2C%20html")
                 .get()
                 .addHeader("x-rapidapi-key", "5471ed4925msh3fd6adab960ceddp1fa57fjsnfd08b578b125")
                 .addHeader("x-rapidapi-host", "community-open-weather-map.p.rapidapi.com")
                 .build();
 
-        Response APIresponse = client.newCall(APIrequest).execute();
-
-        TextView weatherData = findViewById(R.id.weatherDataView);
-        //weatherData.setText(APIresponse.toString());
-
-    }*/
+        Response response = client.newCall(request).execute();
+        */
+    }
 
 }

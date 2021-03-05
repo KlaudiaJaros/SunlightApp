@@ -3,16 +3,12 @@
     <string name="welcomeStr">Welcome</string>
     <string name="sunriseStr">Sunrise:</string>
     <string name="sunsetStr">Sunset:</string>
-    <string name="sunlightLeftStr">Sunlight hours left:</string>
+    <string name="sunlightLeftStr">Sunlight left:</string>
     <string name="weatherStr">Weather in:</string>
     <string name="targetsStr">Set your targets</string>
     <string name="walksStr">Walks</string>
     <string name="settingsStr">Settings</string>
-    <string name="currentSunriseStr">7:10 am</string>
-    <string name="currentSunsetStr">8:25 pm</string>
-    <string name="currentSunlightLeftStr">4</string>
     <string name="targetStr">Your daily target:</string>
-    <string name="currentTargetStr">3</string>
     <string name="targetRemainingStr">Remaining:</string>
     <string name="remainingTargetStr">2</string>
     <string name="aboutStr">About</string>
@@ -24,7 +20,10 @@
     <string name="minStr">min</string>
     <string name="locationNotFoundStr">Location not found</string>
     <string name="saveExitStr">Save and Exit</string>
-    <string name="walksInfoStr">Walks based on your location:</string>
+    <string name="walksInfoStr">based on your location:</string>
     <string name="channel_name">SunlightWalk</string>
     <string name="channel_description">notifications to go for a walk</string>
+    <string name="tempStr">Temperature: </string>
+    <string name="emptyStr" translatable="false"> </string>
+    <string name="notSetStr">not set</string>
 </resources>
