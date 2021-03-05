@@ -7,14 +7,14 @@
 
     <TextView
         android:id="@+id/welcomeTextView"
-        android:layout_width="158dp"
+        android:layout_width="361dp"
         android:layout_height="56dp"
+        android:layout_gravity="left"
+        android:layout_margin="30dp"
         android:fontFamily="@font/marcellus"
         android:text="@string/welcomeStr"
         android:textColor="#745342"
-        android:textSize="36sp"
-        android:layout_gravity="center"
-        android:layout_margin="30dp"/>
+        android:textSize="36sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -107,6 +107,12 @@
             android:textColor="#432F2F" />
 
         <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:text="@string/minStr"
+            android:layout_marginLeft="5dp"/>
+
+        <TextView
             android:id="@+id/targetSummaryTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -146,7 +152,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:fontFamily="@font/marcellus"
-            android:text="location"
+            android:text=""
             android:textColor="#432F2F" />
 
     </LinearLayout>
@@ -158,6 +164,7 @@
         android:layout_gravity="center"
         android:backgroundTint="#745342"
         android:fontFamily="@font/marcellus"
+        android:onClick="aboutButtonOnClick"
         android:text="@string/aboutStr" />
 
     <Button
@@ -167,6 +174,7 @@
         android:layout_gravity="center"
         android:backgroundTint="#745342"
         android:fontFamily="@font/marcellus"
+        android:onClick="walksButtonOnClick"
         android:text="@string/walksStr" />
 
     <Button
@@ -176,6 +184,7 @@
         android:layout_gravity="center"
         android:backgroundTint="#745342"
         android:fontFamily="@font/marcellus"
+        android:onClick="settingsButtonOnClick"
         android:text="@string/settingsStr" />
 
 </LinearLayout>

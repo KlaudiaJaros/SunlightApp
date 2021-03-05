@@ -22,4 +22,9 @@
     <string name="notificationsStr">Notifications</string>
     <string name="receiveNotificationsStr">Receive daily reminders to go outside and enjoy natural sunlight benefits</string>
     <string name="minStr">min</string>
+    <string name="locationNotFoundStr">Location not found</string>
+    <string name="saveExitStr">Save and Exit</string>
+    <string name="walksInfoStr">Walks based on your location:</string>
+    <string name="channel_name">SunlightWalk</string>
+    <string name="channel_description">notifications to go for a walk</string>
 </resources>

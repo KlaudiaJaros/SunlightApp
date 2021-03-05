@@ -16,9 +16,17 @@
     <string name="currentSunlightLeftStr">4</string>
     <string name="currentTargetStr">3</string>
     <string name="remainingTargetStr">2</string>
-    <string name="aboutStr">Więcej</string>
-    <string name="targetSummaryStr">wypelnij</string>
-    <string name="yourNameStr">Twoje imie:</string>
-    <string name="notificationsStr">Notifications</string>
+    <string name="yourNameStr">Twoje imię:</string>
+    <string name="notificationsStr">Powiadomienia</string>
+    <string name="yourTargetStr">Twój cel:</string>
+    <string name="receiveNotificationsStr">Otrzymuj dzienne przypomnienia o wyjściu na spacer by cieszyć się korzyściami światła dziennego</string>
+    <string name="minStr">min</string>
+    <string name="aboutStr">Dowiedz się więcej</string>
+    <string name="targetSummaryStr">Ustaw swój dzienny cel tutaj. <br> Sugerujemy tylko 15 do 30 minut dziennie by rozchmurzyć swój nastrój, polepszyć koncentracje i cieszyć się spokojnym snem.  </br></string>
+    <string name="saveExitStr">Zapisz i wróć</string>
+    <string name="locationNotFoundStr">Lokalizacja nie znaleziona</string>
+    <string name="walksInfoStr">Spacery na podstawie Twojej lokalizacji:</string>
+    <string name="channel_name">SunlightSpacer</string>
+    <string name="channel_description">Przypomnienia o pójciu na spacer</string>
 
 </resources>

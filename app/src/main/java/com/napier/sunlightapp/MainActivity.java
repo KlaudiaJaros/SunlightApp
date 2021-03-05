@@ -1,11 +1,16 @@
 package com.napier.sunlightapp;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,49 +19,53 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Locale;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
 public class MainActivity extends AppCompatActivity {
 
-    // Create a global variable for the system Location Manager and Listener
+    // Create a global variable for the system Location Manager and Listener:
     private LocationManager locationManager;
     private LocationListener locationListener;
-    // The identifier for which permission request has been answered.
+    // The identifier for which permission request has been answered:
     private static final int ACCESS_REQUEST_LOCATION = 0;
+
+    // Location:
     private double lat;
     private double lon;
     private String currentCity;
 
+    // User settings:
+    private static String userName ;
+    private static String target ;
+    private static boolean notificationsEnabled = true; // default
+    private final String filename = "userSettings.csv";
+    private final String filename2 = "notificationsSettings.txt";
+
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button settings = (Button) findViewById(R.id.settingsButton);
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent settingsActivity = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(settingsActivity);
-            }
-        });
+        applyUserSettings();
 
-
+        /*  LOCATION: */
         // Acquire a reference to the system Location Manager
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         // Define a listener that responds to location updates
@@ -68,8 +77,10 @@ public class MainActivity extends AppCompatActivity {
                             "Location changed: Lat: " + location.getLatitude() +
                                     " Lng: " + location.getLongitude();
 
+                    // save latitude and longitude:
                     lat = location.getLatitude();
                     lon = location.getLongitude();
+                    // print to the console:
                     System.out.println("on create: lon and lat: "+lon + " " + lat);
 
                     Toast.makeText(getBaseContext(), locationString, Toast.LENGTH_LONG).show();
@@ -112,6 +123,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        /* Notifications: */
+        if (notificationsEnabled){
+            createNotificationChannel();
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "SunlightChannel")
+                    .setSmallIcon(R.drawable.logo_plain)
+                    .setContentTitle("title")
+                    .setContentText("content")
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+            // notificationId is a unique int for each notification that you must define
+            notificationManager.notify(1, builder.build());
+        }
+
 
         /*try {
             connectWeatherAPI();
@@ -120,8 +147,96 @@ public class MainActivity extends AppCompatActivity {
         }*/
     }
 
-    /*
-    setCity method sets the current city based on the location and changes the locationValue string in Main Activity
+    /**
+     * Reads from the userSettings file and applies user settings to the Activity
+     */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void applyUserSettings(){
+        /* Read from a file located in the internal storage directory provided by the system for this and only this app: */
+
+        // using FileInputStream, try to open the app's file:
+        FileInputStream fis = null;
+        try {
+            fis = this.openFileInput(filename);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        // read from the file using InputStreamReader:
+        InputStreamReader inputStreamReader =
+                new InputStreamReader(fis, StandardCharsets.UTF_8);
+
+        try (BufferedReader reader = new BufferedReader(inputStreamReader)) {
+            String line = reader.readLine();
+            // if the file is not empty, get the username and the target:
+            if (line != null) {
+                String words[] = line.split(",");
+                userName=words[0];
+                target=words[1];
+            }
+        } catch (IOException e) {
+            // Error occurred when opening raw file for reading.
+        }
+
+        // get access to TextViews to display user settings:
+        TextView welcomeString = (TextView)findViewById(R.id.welcomeTextView);
+        TextView targetValue = (TextView)findViewById(R.id.dailyTargetValue);
+
+        // if username and target not empty, display them:
+        if (userName!=null){
+            welcomeString.setText(welcomeString.getText()+" "+ userName);
+        }
+        if(target!=null)
+        {
+            targetValue.setText(target);
+        }
+
+        // load notifications settings:
+        fis = null;
+        try {
+            fis = this.openFileInput(filename2);
+            // read from the file using InputStreamReader:
+            inputStreamReader =
+                    new InputStreamReader(fis, StandardCharsets.UTF_8);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try (BufferedReader reader = new BufferedReader(inputStreamReader)) {
+            String line = reader.readLine();
+            if (line != null && line.equals("true")) {
+                notificationsEnabled=true;
+            }
+            else if (line!=null && line.equals("false")){
+                notificationsEnabled=false;
+            }
+        } catch (IOException e) {
+            // Error occurred when opening raw file for reading.
+        }
+
+    }
+
+    /**
+     * Creates a notification channel to allow Sunlight send notifications:
+     */
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("SunlightChannel", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    /**
+     * Sets the current city based on the location and changes the locationValue string in the Main Activity
      */
     private void setCity(){
 
@@ -130,13 +245,14 @@ public class MainActivity extends AppCompatActivity {
         TextView locationTextView = findViewById(R.id.locationValue); // find the current city string
 
         Geocoder gcd = new Geocoder(this, Locale.getDefault()); // using Geocoder class to find the current city based on longitude and latitude
-        List<Address> addresses = null;
+        List<Address> addresses = null; // to store sample addresses
         try {
             addresses = gcd.getFromLocation(lat, lon, 10); // get a sample of addresses
             if (addresses.size() > 0) { // if not empty
                 for (Address a: addresses) { // loop through addresses to find a city
                     if (a.getLocality() != null && a.getLocality().length() > 0) { // if not null or empty
                         currentCity=a.getLocality(); // save the location
+                        System.out.println(currentCity);
                         locationTextView.setText(currentCity);  // change the city in the main activity
                         break;
                     }
@@ -184,6 +300,36 @@ public class MainActivity extends AppCompatActivity {
     private void setLocationUpdateFunction() {
         locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER,
                 MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, locationListener);
+    }
+
+    /**
+     * Cahange current activity to AboutActivity
+     * @param view
+     */
+    public void aboutButtonOnClick(View view) {
+        Intent settingsActivity = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(settingsActivity);
+    }
+
+    /**
+     * Changes current activity to WalksActivity
+     * @param view
+     */
+    public void walksButtonOnClick(View view) {
+        // go to walks activity and pass the current city:
+        Intent walksActivity = new Intent(MainActivity.this, WalksActivity.class);
+        walksActivity.putExtra("city", currentCity);
+        setResult(1, walksActivity);
+        startActivity(walksActivity);
+    }
+
+    /**
+     * Changes current activity to SettingsActivity
+     * @param view view
+     */
+    public void settingsButtonOnClick(View view) {
+        Intent settingsActivity = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(settingsActivity);
     }
 
 
