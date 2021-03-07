@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorOnPrimary"
+    tools:context=".WalkDetailsActivity">
+
+    <TextView
+        android:id="@+id/walkTitleTextView"
+        android:layout_width="369dp"
+        android:layout_height="58dp"
+        android:layout_gravity="center"
+        android:layout_margin="30dp"
+        android:fontFamily="@font/marcellus"
+        android:text="Arthur Seat Walk"
+        android:textColor="?attr/colorPrimaryVariant"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description:"
+        app:layout_constraintEnd_toEndOf="@+id/walkTitleTextView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/walkTitleTextView"
+        app:layout_constraintTop_toBottomOf="@+id/walkTitleTextView" />
+
+    <TextView
+        android:id="@+id/fullDescText"
+        android:layout_width="371dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="@+id/walkTitleTextView"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
+
+    <ImageView
+        android:id="@+id/walkImageView"
+        android:layout_width="415dp"
+        android:layout_height="273dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fullDescText"
+        app:srcCompat="@drawable/plain_background" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

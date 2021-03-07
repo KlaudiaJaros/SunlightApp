@@ -44,6 +44,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
@@ -65,12 +66,10 @@ public class MainActivity extends AppCompatActivity {
     private String currentCity;
 
     // User settings:
-    private static String userName ;
-    private static String target ;
-    private static boolean notificationsEnabled = true; // default
+    private static String userName;
+    private static String target;
+    private static String notificationsEnabled = "true"; // default
     private final String filename = "userSettings.csv";
-    private final String filename2 = "notificationsSettings.txt";
-
 
 
     @Override
@@ -83,6 +82,50 @@ public class MainActivity extends AppCompatActivity {
         /*  LOCATION: */
         // Acquire a reference to the system Location Manager
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+
+            // Handle the case we don't have the necessary permission
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            ) {
+                Log.e(getResources().getString(R.string.app_name),
+                        "No Location Permission. Asking for Permission");
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_REQUEST_LOCATION);
+            } else {
+                Log.i(getResources().getString(R.string.app_name),
+                        "Location is allowed.");
+                setLocationUpdateFunction();
+            }
+            return;
+        }
+        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if (location != null) {
+            // save latitude and longitude:
+            lat = location.getLatitude();
+            lon = location.getLongitude();
+            // print to the console:
+            System.out.println("get current location: lon and lat: "+lon + " " + lat);
+
+            // set city:
+            setCity();
+
+            // pull weather data:
+            try {
+                connectWeatherAPI();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         // Define a listener that responds to location updates
         locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
@@ -96,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                     lat = location.getLatitude();
                     lon = location.getLongitude();
                     // print to the console:
-                    System.out.println("on create: lon and lat: "+lon + " " + lat);
+                    System.out.println("location change: lon and lat: "+lon + " " + lat);
 
                     Toast.makeText(getBaseContext(), locationString, Toast.LENGTH_LONG).show();
                     setCity();
@@ -144,13 +187,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         /* Notifications: */
-        if (notificationsEnabled){
+        if (notificationsEnabled.equals("true")){
             createNotificationChannel();
 
+            String contentStr=this.getString(R.string.dailyReminderContentStr);
+            String titleStr = this.getString(R.string.dailyReminderStr);
+
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "SunlightChannel")
-                    .setSmallIcon(R.drawable.logo_plain)
-                    .setContentTitle("title")
-                    .setContentText("content")
+                    .setSmallIcon(R.drawable.ic_stat_name)
+                    .setContentTitle(titleStr)
+                    .setContentText(contentStr)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -189,8 +235,13 @@ public class MainActivity extends AppCompatActivity {
             // if the file is not empty, get the username and the target:
             if (line != null) {
                 String words[] = line.split(",");
-                userName=words[0];
-                target=words[1];
+                if (!words[0].equals("null")){
+                    userName=words[0];
+                }
+                if (!words[1].equals("null")){
+                    target=words[1];
+                }
+                notificationsEnabled=words[2];
             }
         } catch (Exception e) {
             // Error occurred when opening raw file for reading.
@@ -208,31 +259,6 @@ public class MainActivity extends AppCompatActivity {
         {
             targetValue.setText(target);
         }
-
-        // load notifications settings:
-        fis = null;
-        try {
-            fis = this.openFileInput(filename2);
-            // read from the file using InputStreamReader:
-            inputStreamReader =
-                    new InputStreamReader(fis, StandardCharsets.UTF_8);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            BufferedReader reader = new BufferedReader(inputStreamReader);
-            String line = reader.readLine();
-            if (line != null && line.equals("true")) {
-                notificationsEnabled=true;
-            }
-            else if (line!=null && line.equals("false")){
-                notificationsEnabled=false;
-            }
-        } catch (Exception e) {
-            // Error occurred when opening raw file for reading.
-        }
-
     }
 
     @Override
@@ -365,9 +391,11 @@ public class MainActivity extends AppCompatActivity {
         TextView tempEdit = (TextView)findViewById(R.id.tempValue);
         TextView minTempEdit = (TextView)findViewById(R.id.minTempValue);
         TextView maxTempEdit = (TextView)findViewById(R.id.maxTempValue);
+        TextView feelsLikeEdit = (TextView)findViewById(R.id.feelsLikeValue);
         TextView sunriseEdit = (TextView) findViewById(R.id.sunriseValue);
         TextView sunsetEdit = (TextView)findViewById(R.id.sunsetValue);
         TextView sunlightLeftEdit = (TextView)findViewById(R.id.sunlightLeftValue);
+        TextView descEdit = (TextView)findViewById(R.id.descText);
 
         // url to OpenWeatherMap API:
         String url = "https://api.openweathermap.org/data/2.5/weather?lat=" +lat+ "&lon=" + lon + "&appid=38ed18e5f6d4211046e1cf89af573e7a&units=metric";
@@ -382,13 +410,16 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray array=response.getJSONArray("weather");
                     JSONObject object = array.getJSONObject(0);
 
-                    // get the weather information from the response:
-                    String temp = String.valueOf(mainObj.getDouble("temp"));
-                    String minTemp=String.valueOf(mainObj.getDouble("temp_min"));
-                    String maxTemp=String.valueOf(mainObj.getDouble("temp_max"));
-                    String description = object.getString("description");
-                    String city = response.getString("name");
+                    // to format floats:
+                    DecimalFormat df = new DecimalFormat();
+                    df.setMaximumFractionDigits(0);
 
+                    // get the weather information from the response:
+                    String temp = df.format(mainObj.getDouble("temp"));
+                    String minTemp=df.format(mainObj.getDouble("temp_min"));
+                    String maxTemp=df.format(mainObj.getDouble("temp_max"));
+                    String feelsLike = df.format(mainObj.getDouble("feels_like"));
+                    String description = object.getString("description");
 
                     long sunrise = sysObj.getLong("sunrise");
                     long sunset = sysObj.getLong("sunset");
@@ -403,26 +434,28 @@ public class MainActivity extends AppCompatActivity {
                     calendar.setTimeInMillis(sunset*1000);
                     String sunsetTime = calendar.get(Calendar.HOUR) + "." + calendar.get(Calendar.MINUTE) + " pm";
 
-
                     System.out.println("Sunrise: " + sunriseTime + ", sunset: " + sunsetTime + ", current time: " + currentTime + ", difference: " + difference);
 
-
-                    tempEdit.setText(temp+" C");
-                    minTempEdit.setText(minTemp+" C");
-                    maxTempEdit.setText(maxTemp+" C");
+                    tempEdit.setText(temp+" ºC");
+                    minTempEdit.setText(minTemp+" ºC");
+                    maxTempEdit.setText(maxTemp+" ºC");
+                    feelsLikeEdit.setText(feelsLike + " ºC");
                     sunriseEdit.setText(sunriseTime);
                     sunsetEdit.setText(sunsetTime);
+                    descEdit.setText("Description: " + description);
 
                     difference=difference/1000;
                     float minuteDifference = difference/60;
+
                     if (minuteDifference>=60 && currentTime>=(sunrise*1000)) {
-                        String differenceStr = String.valueOf(minuteDifference/60) + " hour/min";
-                        sunlightLeftEdit.setText(differenceStr);
+                        int hour= (int) (minuteDifference/60);
+                        int minutes = (int) (minuteDifference%60);
+
+                        sunlightLeftEdit.setText(hour+ " hours " + minutes + "min");
                     }
                     else if (minuteDifference>0 && currentTime>=(sunrise*1000)){
-                        int minutes = (int)minuteDifference;
-                        String differenceStr = String.valueOf(minutes) + " min/s";
-                        sunlightLeftEdit.setText(differenceStr);
+                        int minutes = (int)(minuteDifference%60);
+                        sunlightLeftEdit.setText(minutes + " min");
                     }
                     else{
 
@@ -438,26 +471,13 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                error.printStackTrace();
             }
         }
     );
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(jor);
 
-
-        /*
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url("https://community-open-weather-map.p.rapidapi.com/weather?q=London%2Cuk&lat=0&lon=0&callback=test&id=2172797&lang=null&units=%22metric%22%20or%20%22imperial%22&mode=xml%2C%20html")
-                .get()
-                .addHeader("x-rapidapi-key", "5471ed4925msh3fd6adab960ceddp1fa57fjsnfd08b578b125")
-                .addHeader("x-rapidapi-host", "community-open-weather-map.p.rapidapi.com")
-                .build();
-
-        Response response = client.newCall(request).execute();
-        */
     }
 
 }

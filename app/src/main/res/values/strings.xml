@@ -8,7 +8,7 @@
     <string name="targetsStr">Set your targets</string>
     <string name="walksStr">Walks</string>
     <string name="settingsStr">Settings</string>
-    <string name="targetStr">Your daily target:</string>
+    <string name="targetStr">Your daily sunlight target:</string>
     <string name="targetRemainingStr">Remaining:</string>
     <string name="remainingTargetStr">2</string>
     <string name="aboutStr">About</string>
@@ -26,4 +26,8 @@
     <string name="tempStr">Temperature: </string>
     <string name="emptyStr" translatable="false"> </string>
     <string name="notSetStr">not set</string>
+    <string name="dailyReminderStr">Daily reminder to enjoy the sunlight! </string>
+    <string name="dailyReminderContentStr">Only 15 min a day can improve your mood and general wellbeing. </string>
+    <string name="aboutSunlightStr">About Sunlight</string>
+    <string name="feelsStr">Feels like:</string>
 </resources>

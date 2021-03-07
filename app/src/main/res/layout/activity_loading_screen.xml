@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fdf8f2"
+    android:background="?attr/colorOnPrimary"
     tools:context=".LoadingScreenActivity">
 
     <ProgressBar
@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="@+id/progressBar"
         app:layout_constraintStart_toStartOf="@+id/progressBar"
         app:layout_constraintTop_toBottomOf="@+id/progressBar"
-        app:srcCompat="@mipmap/woman" />
+        app:srcCompat="@drawable/woman" />
 
     <ImageView
         android:id="@+id/imageView2"

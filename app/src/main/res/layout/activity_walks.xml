@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/light_beige">
+    android:background="?attr/colorOnPrimary">
 
     <TextView
         android:id="@+id/walksTextView"
@@ -11,7 +11,7 @@
         android:layout_height="56dp"
         android:fontFamily="@font/marcellus"
         android:text="@string/walksStr"
-        android:textColor="@color/brown"
+        android:textColor="?attr/colorPrimaryVariant"
         android:textSize="36sp"
         android:layout_gravity="center"
         android:layout_margin="30dp"/>

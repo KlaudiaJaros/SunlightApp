@@ -13,4 +13,10 @@
     <color name="gold">#ffba24</color>
     <color name="dark_brown">#432F2F</color>
     <color name="light_beige">#fdf8f2</color>
+    <color name="grey">#9c9a95</color>
+    <color name="dark_dark_grey">#454545</color>
+    <color name="bright_yellow">#fceb86</color>
+    <color name="brown_grey">#7d6f68</color>
+    <color name="dirty_white">#e6e6e6</color>
+    <color name="cream">#fff2e3</color>
 </resources>

@@ -26,5 +26,9 @@
     <string name="channel_description">Przypomnienia o pójciu na spacer</string>
     <string name="tempStr">Temperatura:</string>
     <string name="notSetStr">zero</string>
+    <string name="dailyReminderStr">Dziennie przypomienie o pójciu na spacer! </string>
+    <string name="dailyReminderContentStr">Tylko 15 minut dziennie może polepszyć Twoje samopoczucie. </string>
+    <string name="aboutSunlightStr">O Sunlight</string>
+    <string name="feelsStr">Odczuwalna:</string>
 
 </resources>

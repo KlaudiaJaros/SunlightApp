@@ -3,10 +3,11 @@
     <style name="Theme.SunlightApp" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/dark_gold</item>
-        <item name="colorPrimaryVariant">@color/brown</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/brown</item> <!-- titles and buttons colour-->
+        <item name="colorOnPrimary">@color/light_beige</item> <!-- background-->
+
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/dark_gold</item>
+        <item name="colorSecondary">@color/light_beige</item> <!-- buttons text colour -->
         <item name="colorSecondaryVariant">@color/dark_gold</item>
         <item name="colorOnSecondary">@color/dark_brown</item>
         <item name="android:textColor">@color/dark_brown</item>

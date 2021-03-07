@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class WalksActivity extends AppCompatActivity {
 
@@ -26,11 +29,11 @@ public class WalksActivity extends AppCompatActivity {
         {
             final String[] edinburghWalks = new String[]
                     { "Arthur Seat",
-                    "Water of Leith",
+                    "Calton Hill",
                     "Princes Gardens",
-                    "Newhaven to Granton Harbour",
+                    "Royal Botanic Garden",
                     "Portobello Beach",
-                    "Union Canal"};
+                    "Dean Village"};
 
             final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                     android.R.layout.simple_list_item_1,
@@ -38,7 +41,22 @@ public class WalksActivity extends AppCompatActivity {
                     edinburghWalks);
 
             walksList.setAdapter(adapter);
-            walksList.setContentDescription("Arthur Seat Walk");
+            walksList.setContentDescription("Walks selection");
+            walksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Object o = walksList.getItemAtPosition(position);
+                    String element=(String)o;//As you are using Default String Adapter
+                    Toast.makeText(getApplicationContext(),element,Toast.LENGTH_SHORT).show();
+
+                    Intent walkDetails = new Intent(WalksActivity.this, WalkDetailsActivity.class);
+                    walkDetails.putExtra("walk", element);
+                    walkDetails.putExtra("city", city);
+                    setResult(1, walkDetails);
+                    startActivity(walkDetails);
+
+                }
+            });
         }
 
     }
