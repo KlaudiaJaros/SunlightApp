@@ -7,12 +7,11 @@
         <item name="colorOnPrimary">@color/light_beige</item> <!-- background-->
 
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/light_beige</item> <!-- buttons text colour -->
+        <item name="colorSecondary">@color/dark_gold</item>  <!-- switch colour, EditText underline colour -->
         <item name="colorSecondaryVariant">@color/dark_gold</item>
-        <item name="colorOnSecondary">@color/dark_brown</item>
+        <item name="colorOnSecondary">@color/cream</item>
+
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item> <!-- Status bar color. -->
         <item name="android:textColor">@color/dark_brown</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
     </style>
 </resources>

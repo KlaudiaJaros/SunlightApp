@@ -22,7 +22,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,22 +31,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.type.DateTime;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
-import java.time.Instant;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -65,19 +58,34 @@ public class MainActivity extends AppCompatActivity {
     private double lon;
     private String currentCity;
 
-    // User settings:
-    private static String userName;
-    private static String target;
-    private static String notificationsEnabled = "true"; // default
     private final String filename = "userSettings.csv";
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        applyUserSettings();
+        // open FileInputStream to apply user settings:
+        FileInputStream fis = null;
+        try{
+            fis = this.openFileInput(filename);
+        }
+        catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+        UserSettings.loadUserSettings(fis);
+
+        // get access to TextViews to display user settings:
+        TextView welcomeString = (TextView)findViewById(R.id.welcomeTextView);
+        TextView targetValue = (TextView)findViewById(R.id.dailyTargetValue);
+
+        // if username and target not empty, display them:
+        if (UserSettings.getUserName()!=null){
+            welcomeString.setText(welcomeString.getText()+" "+ UserSettings.getUserName());
+        }
+        if(UserSettings.getTarget()!=null)
+        {
+            targetValue.setText(UserSettings.getTarget());
+        }
 
         /*  LOCATION: */
         // Acquire a reference to the system Location Manager
@@ -187,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         /* Notifications: */
-        if (notificationsEnabled.equals("true")){
+        if (UserSettings.getNotificationsEnabled().equals("true")){
             createNotificationChannel();
 
             String contentStr=this.getString(R.string.dailyReminderContentStr);
@@ -209,58 +217,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     /**
-     * Reads from the userSettings file and applies user settings to the Activity
+     * Goes back to Loading Screen Activity and launches the app again if the user uses the back button
      */
-    private void applyUserSettings(){
-        /* Read from a file located in the internal storage directory provided by the system for this and only this app: */
-
-        // using FileInputStream, try to open the app's file:
-        FileInputStream fis = null;
-        InputStreamReader inputStreamReader = null;
-        try {
-            fis = this.openFileInput(filename);
-            // read from the file using InputStreamReader:
-            inputStreamReader =
-                    new InputStreamReader(fis, StandardCharsets.UTF_8);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-
-
-        try {
-            BufferedReader reader = new BufferedReader(inputStreamReader);
-            String line = reader.readLine();
-            // if the file is not empty, get the username and the target:
-            if (line != null) {
-                String words[] = line.split(",");
-                if (!words[0].equals("null")){
-                    userName=words[0];
-                }
-                if (!words[1].equals("null")){
-                    target=words[1];
-                }
-                notificationsEnabled=words[2];
-            }
-        } catch (Exception e) {
-            // Error occurred when opening raw file for reading.
-        }
-
-        // get access to TextViews to display user settings:
-        TextView welcomeString = (TextView)findViewById(R.id.welcomeTextView);
-        TextView targetValue = (TextView)findViewById(R.id.dailyTargetValue);
-
-        // if username and target not empty, display them:
-        if (userName!=null){
-            welcomeString.setText(welcomeString.getText()+" "+ userName);
-        }
-        if(target!=null)
-        {
-            targetValue.setText(target);
-        }
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -428,11 +388,24 @@ public class MainActivity extends AppCompatActivity {
                     long currentTime = calendar.getTimeInMillis();
                     long difference = sunset*1000 - currentTime;
 
+                    String sunriseTime="";
                     calendar.setTimeInMillis(sunrise*1000); // times 1000 because the time stamp is in milliseconds
-                    String sunriseTime = calendar.get(Calendar.HOUR) + "." + calendar.get(Calendar.MINUTE) + " am";
+                    if (calendar.get(Calendar.MINUTE)<10){ // because if it's 12:08 it displays it as 12:8
+                        sunriseTime = calendar.get(Calendar.HOUR) + ".0" + calendar.get(Calendar.MINUTE) + " am";
+                    }
+                    else{
+                        sunriseTime = calendar.get(Calendar.HOUR) + "." + calendar.get(Calendar.MINUTE) + " am";
+                    }
 
+                    String sunsetTime="";
                     calendar.setTimeInMillis(sunset*1000);
-                    String sunsetTime = calendar.get(Calendar.HOUR) + "." + calendar.get(Calendar.MINUTE) + " pm";
+                    if (calendar.get(Calendar.MINUTE)<10){ // because if it's 12:08 it displays it as 12:8
+                        sunsetTime = calendar.get(Calendar.HOUR) + ".0" + calendar.get(Calendar.MINUTE) + " pm";
+                    }
+                    else{
+                        sunsetTime = calendar.get(Calendar.HOUR) + "." + calendar.get(Calendar.MINUTE) + " pm";
+                    }
+
 
                     System.out.println("Sunrise: " + sunriseTime + ", sunset: " + sunsetTime + ", current time: " + currentTime + ", difference: " + difference);
 

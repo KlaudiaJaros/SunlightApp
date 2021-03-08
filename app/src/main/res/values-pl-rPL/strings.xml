@@ -11,7 +11,6 @@
     <string name="settingsStr">Ustawienia</string>
     <string name="targetStr">Twój dzienny cel:</string>
     <string name="targetRemainingStr">Pozostało:</string>
-    <string name="remainingTargetStr">2</string>
     <string name="yourNameStr">Twoje imię:</string>
     <string name="notificationsStr">Powiadomienia</string>
     <string name="yourTargetStr">Twój cel:</string>
@@ -30,5 +29,8 @@
     <string name="dailyReminderContentStr">Tylko 15 minut dziennie może polepszyć Twoje samopoczucie. </string>
     <string name="aboutSunlightStr">O Sunlight</string>
     <string name="feelsStr">Odczuwalna:</string>
+    <string name="recordWalksStr">Edytuj</string>
+    <string name="viewWalksStr">Zobacz</string>
+    <string name="walkSuggStr">Sugerowane spacery</string>
 
 </resources>

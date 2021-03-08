@@ -12,10 +12,8 @@
         android:id="@+id/welcomeTextView"
         android:layout_width="362dp"
         android:layout_height="47dp"
-        android:layout_gravity="left"
-        android:layout_margin="30dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
         android:fontFamily="@font/marcellus"
         android:text="@string/welcomeStr"
         android:textColor="?attr/colorPrimaryVariant"
@@ -28,39 +26,41 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/marcellus"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout3"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout3"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout8"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout8"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
 
         <TextView
             android:id="@+id/sunlightTextView"
             android:layout_width="wrap_content"
-            android:layout_marginTop="7dp"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
             android:layout_marginLeft="30dp"
+            android:layout_marginTop="7dp"
             android:fontFamily="@font/marcellus"
-            android:text="@string/sunlightLeftStr"/>
+            android:text="@string/sunlightLeftStr"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/sunlightLeftValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
             android:layout_marginLeft="8dp"
-            android:textSize="18sp"
+            android:layout_marginTop="7dp"
             android:fontFamily="@font/marcellus"
-            android:text="@string/emptyStr" />
+            android:text="@string/emptyStr"
+            android:textSize="18sp" />
+
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/cream"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="14dp"
+        android:background="?attr/colorOnSecondary"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="@+id/welcomeTextView"
         app:layout_constraintStart_toStartOf="@+id/welcomeTextView"
@@ -71,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="9dp"
             android:fontFamily="@font/marcellus"
             android:text="@string/targetStr"
             android:textSize="18sp" />
@@ -79,21 +79,21 @@
         <TextView
             android:id="@+id/dailyTargetValue"
             android:layout_width="wrap_content"
-            android:layout_marginTop="7dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
+            android:layout_marginTop="9dp"
             android:fontFamily="@font/marcellus"
             android:text="@string/notSetStr"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
             android:layout_marginLeft="5dp"
-            android:textSize="18sp"
+            android:layout_marginTop="9dp"
             android:fontFamily="@font/marcellus"
-            android:text="@string/minStr" />
+            android:text="@string/minStr"
+            android:textSize="18sp" />
         <!--
         <TextView
             android:id="@+id/targetSummaryTextView"
@@ -119,8 +119,9 @@
         android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="?attr/colorOnSecondary"
         android:fontFamily="@font/marcellus"
-        android:background="@color/cream"
         android:orientation="horizontal"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
@@ -131,8 +132,8 @@
             android:id="@+id/weatherTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
             android:layout_marginLeft="30dp"
+            android:layout_marginTop="9dp"
             android:fontFamily="@font/marcellus"
             android:text="@string/weatherStr"
             android:textSize="18sp" />
@@ -140,12 +141,12 @@
         <TextView
             android:id="@+id/locationValue"
             android:layout_width="170dp"
-            android:textSize="18sp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="9dp"
             android:fontFamily="@font/marcellus"
-            android:text=""/>
+            android:text=""
+            android:textSize="18sp" />
 
 
     </LinearLayout>
@@ -153,8 +154,8 @@
 
     <Button
         android:id="@+id/aboutButton"
-        android:layout_width="330dp"
-        android:layout_height="54dp"
+        android:layout_width="420dp"
+        android:layout_height="48dp"
         android:layout_gravity="center"
         android:backgroundTint="?attr/colorPrimaryVariant"
         android:fontFamily="@font/marcellus"
@@ -167,13 +168,13 @@
 
     <Button
         android:id="@+id/walksButton"
-        android:layout_width="330dp"
-        android:layout_height="54dp"
+        android:layout_width="420dp"
+        android:layout_height="48dp"
         android:layout_gravity="center"
         android:backgroundTint="?attr/colorPrimaryVariant"
         android:fontFamily="@font/marcellus"
         android:onClick="walksButtonOnClick"
-        android:text="@string/walksStr"
+        android:text="@string/walkSuggStr"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/settingsButton"
         app:layout_constraintEnd_toEndOf="@+id/aboutButton"
@@ -181,10 +182,10 @@
 
     <Button
         android:id="@+id/settingsButton"
-        android:layout_width="330dp"
-        android:layout_height="54dp"
+        android:layout_width="420dp"
+        android:layout_height="48dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:backgroundTint="?attr/colorPrimaryVariant"
         android:fontFamily="@font/marcellus"
         android:onClick="settingsButtonOnClick"
@@ -248,6 +249,7 @@
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/marcellus"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -258,39 +260,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:fontFamily="@font/marcellus"
-            android:textSize="18sp"
             android:layout_marginTop="7dp"
-            android:text="@string/tempStr" />
+            android:fontFamily="@font/marcellus"
+            android:text="@string/tempStr"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tempValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="7dp"
             android:fontFamily="@font/marcellus"
-            android:layout_marginLeft="10dp"
-            android:text="@string/emptyStr" />
+            android:text="@string/emptyStr"
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:fontFamily="@font/marcellus"
-            android:textSize="18sp"
             android:layout_marginTop="7dp"
-            android:text="@string/feelsStr" />
+            android:fontFamily="@font/marcellus"
+            android:text="@string/feelsStr"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/feelsLikeValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="7dp"
             android:fontFamily="@font/marcellus"
-            android:layout_marginLeft="10dp"
-            android:text="@string/emptyStr" />
+            android:text="@string/emptyStr"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -346,6 +348,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout9"
         android:layout_width="407dp"
         android:layout_height="90dp"
         android:orientation="vertical"
@@ -361,9 +364,63 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="7dp"
             android:fontFamily="@font/marcellus"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout7"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="?attr/colorOnSecondary"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout3"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="7dp"
+            android:fontFamily="@font/marcellus"
+            android:text="@string/targetRemainingStr"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/remainingValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="7dp"
+            android:fontFamily="@font/marcellus"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout8"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="?attr/colorOnSecondary"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout7"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout7"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
+
+        <Button
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="20dp"
+            android:text="@string/viewWalksStr" />
+        <Button
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/recordWalksStr" />
     </LinearLayout>
 
 

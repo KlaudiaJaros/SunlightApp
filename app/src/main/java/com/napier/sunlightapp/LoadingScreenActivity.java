@@ -9,10 +9,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 /**
  * Activity that shows the app's loading screen with the app logo.
  */
 public class LoadingScreenActivity extends AppCompatActivity {
+    private final String filename = "userSettings.csv";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

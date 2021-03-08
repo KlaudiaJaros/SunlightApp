@@ -10,7 +10,6 @@
     <string name="settingsStr">Settings</string>
     <string name="targetStr">Your daily sunlight target:</string>
     <string name="targetRemainingStr">Remaining:</string>
-    <string name="remainingTargetStr">2</string>
     <string name="aboutStr">About</string>
     <string name="targetSummaryStr">Set your daily sunlight target here. <br> We recommend as little as 15-30 min a day to lift your mood, improve concentration and aid your goodnight sleep. </br> </string>
     <string name="yourNameStr">Your name:</string>
@@ -30,4 +29,7 @@
     <string name="dailyReminderContentStr">Only 15 min a day can improve your mood and general wellbeing. </string>
     <string name="aboutSunlightStr">About Sunlight</string>
     <string name="feelsStr">Feels like:</string>
+    <string name="recordWalksStr">Record walks</string>
+    <string name="viewWalksStr">View walks</string>
+    <string name="walkSuggStr">Walk suggestions</string>
 </resources>
