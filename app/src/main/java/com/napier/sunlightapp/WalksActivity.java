@@ -11,6 +11,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 public class WalksActivity extends AppCompatActivity {
 
     @Override
@@ -21,27 +23,37 @@ public class WalksActivity extends AppCompatActivity {
         ListView walksList = (ListView) findViewById(R.id.walksList);
 
         Intent intent = getIntent();
-        String city = intent.getExtras().getString("city");
+        String city = Objects.requireNonNull(intent.getExtras()).getString("city");
         TextView cityTV = (TextView) findViewById(R.id.cityStr);
         cityTV.setText(city);
 
-        if (city.equals("Edinburgh"))
-        {
-            final String[] edinburghWalks = new String[]
-                    { "Arthur Seat",
-                    "Calton Hill",
-                    "Princes Gardens",
-                    "Royal Botanic Garden",
-                    "Portobello Beach",
-                    "Dean Village"};
+        String[] walks = new String[6];
+        if (city.equals("Edinburgh") || city.equals("Glasgow")){
+            if (city.equals("Edinburgh"))
+            {
+                walks = new String[]
+                        { "Arthur Seat",
+                                "Calton Hill",
+                                "Princes Gardens",
+                                "Royal Botanic Garden",
+                                "Portobello Beach",
+                                "Dean Village"};
+            }
+            else if(city.equals("Glasgow")){
+                walks = new String[]
+                        {"River Clyde Walk",
+                                "Kelvingrove Park"};
+            }
 
-            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+            // set the array adapter with the correct walks based on the city:
+            final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                     android.R.layout.simple_list_item_1,
                     android.R.id.text1,
-                    edinburghWalks);
-
+                    walks);
             walksList.setAdapter(adapter);
             walksList.setContentDescription("Walks selection");
+
+            // add a on item click listener to open WalkDetailsActivity:
             walksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -58,7 +70,9 @@ public class WalksActivity extends AppCompatActivity {
                 }
             });
         }
-
+        else {
+            TextView noCity = (TextView)findViewById(R.id.noCityText);
+            noCity.setText(R.string.walksAvailableStr);
+        }
     }
-
 }

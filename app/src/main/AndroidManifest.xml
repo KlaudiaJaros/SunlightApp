@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SunlightApp">
-        <activity android:name=".WalkDetailsActivity"></activity>
+        <activity android:name=".ViewWalksActivity"></activity>
+        <activity android:name=".RecordWalksActivity" />
+        <activity android:name=".WalkDetailsActivity" />
         <activity android:name=".AboutActivity" />
         <activity android:name=".WalksActivity" />
         <activity android:name=".SettingsActivity" />

@@ -37,9 +37,15 @@ public class WalkDetailsActivity extends AppCompatActivity {
 
         // get the walk name from the previous activity:
         Intent intent = getIntent();
-        String walk = intent.getExtras().getString("walk");
-        walkTitle.setText(walk);
-        String city= intent.getExtras().getString("city");
+        String walk="";
+        String city="";
+        if (intent.hasExtra("walk")) {
+            walk = intent.getExtras().getString("walk");
+            walkTitle.setText(walk);
+        }
+        if(intent.hasExtra("city")){
+            city= intent.getExtras().getString("city");
+        }
 
         /* Firebase Storage: */
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -69,8 +75,11 @@ public class WalkDetailsActivity extends AppCompatActivity {
         // Access a Cloud Firestore instance:
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        city =city.toLowerCase(); // collection names are saved all lowercase
+
         // open the Firebase collection:
-        DocumentReference docRef = db.collection("walks").document("edinburgh");
+        DocumentReference docRef = db.collection("walks").document(city);
+        String finalWalk = walk;
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             private static final String TAG = "Firebase" ;
 
@@ -80,7 +89,7 @@ public class WalkDetailsActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Map<String,Object> walkDetails = document.getData();
-                        walkDescription.setText(String.valueOf(walkDetails.get(walk)));
+                        walkDescription.setText(String.valueOf(walkDetails.get(finalWalk)));
                         //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                     } else {
                         Log.d(TAG, "No such document");

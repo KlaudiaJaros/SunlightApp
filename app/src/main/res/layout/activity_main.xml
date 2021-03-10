@@ -5,14 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorOnPrimary"
-    tools:context=".MainActivity"
-    android:fontFamily="@font/marcellus">
+    android:fontFamily="@font/marcellus"
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/welcomeTextView"
         android:layout_width="362dp"
         android:layout_height="47dp"
-        android:layout_marginStart="10dp"
+        android:layout_margin="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="15dp"
         android:fontFamily="@font/marcellus"
         android:text="@string/welcomeStr"
@@ -22,134 +24,359 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/marcellus"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout8"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout8"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
-
-        <TextView
-            android:id="@+id/sunlightTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="7dp"
-            android:fontFamily="@font/marcellus"
-            android:text="@string/sunlightLeftStr"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/sunlightLeftValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="7dp"
-            android:fontFamily="@font/marcellus"
-            android:text="@string/emptyStr"
-            android:textSize="18sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="14dp"
-        android:background="?attr/colorOnSecondary"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/welcomeTextView"
-        app:layout_constraintStart_toStartOf="@+id/welcomeTextView"
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcomeTextView">
 
-        <TextView
-            android:id="@+id/targetTextView"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="9dp"
+            android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:background="?attr/colorOnSecondary"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/welcomeTextView"
+                    app:layout_constraintStart_toStartOf="@+id/welcomeTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/welcomeTextView">
+
+                    <TextView
+                        android:id="@+id/targetTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="9dp"
+                        android:fontFamily="@font/marcellus"
+                        android:text="@string/targetStr"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/dailyTargetValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="9dp"
+                        android:fontFamily="@font/marcellus"
+                        android:text="@string/notSetStr"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="9dp"
+                        android:fontFamily="@font/marcellus"
+                        android:text="@string/minStr"
+                        android:textSize="18sp" />
+                        <!--
+                    <TextView
+                        android:id="@+id/targetSummaryTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/marcellus"
+                        android:text="@string/targetRemainingStr"
+                        android:textColor="#432F2F"
+                        android:layout_marginLeft="20dp"/>
+
+                    <TextView
+                        android:id="@+id/remainingTargetValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:fontFamily="@font/marcellus"
+                        android:text="@string/remainingTargetStr"
+                        android:textColor="#432F2F" />
+                        -->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout7"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="?attr/colorOnSecondary"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="7dp"
+                        android:fontFamily="@font/marcellus"
+                        android:text="@string/targetRemainingStr"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/remainingValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="7dp"
+                        android:fontFamily="@font/marcellus"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout8"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="?attr/colorOnSecondary"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_width="180dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginBottom="8dp"
+                        android:onClick="viewWalksButtonOnClick"
+                        android:text="@string/viewWalksStr" />
+
+                    <Button
+                        android:layout_width="180dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginBottom="8dp"
+                        android:onClick="recordWalksButtonOnClick"
+                        android:text="@string/recordWalksStr" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/marcellus"
+                    android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/sunlightTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/marcellus"
+                    android:text="@string/sunlightLeftStr"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/sunlightLeftValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/marcellus"
+                    android:text="@string/emptyStr"
+                    android:textSize="18sp" />
+
+                </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/sunriseTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/marcellus"
+                android:text="@string/sunriseStr"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/sunriseValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/marcellus"
+                android:text="@string/emptyStr"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/sunsetTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/marcellus"
+                android:text="@string/sunsetStr"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/sunsetValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/marcellus"
+                android:text="@string/emptyStr"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="?attr/colorOnSecondary"
             android:fontFamily="@font/marcellus"
-            android:text="@string/targetStr"
-            android:textSize="18sp" />
+            android:orientation="horizontal"
+            android:textSize="18sp">
 
-        <TextView
-            android:id="@+id/dailyTargetValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="9dp"
+            <TextView
+                android:id="@+id/weatherTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="9dp"
+                android:fontFamily="@font/marcellus"
+                android:text="@string/weatherStr"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/locationValue"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="9dp"
+                android:fontFamily="@font/marcellus"
+                android:text=""
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/marcellus"
-            android:text="@string/notSetStr"
-            android:textSize="18sp" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="9dp"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/marcellus"
+                android:text="@string/tempStr"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tempValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/marcellus"
+                android:text="@string/emptyStr"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/marcellus"
+                android:text="@string/feelsStr"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/feelsLikeValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/marcellus"
+                android:text="@string/emptyStr"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout6"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
             android:fontFamily="@font/marcellus"
-            android:text="@string/minStr"
-            android:textSize="18sp" />
-        <!--
-        <TextView
-            android:id="@+id/targetSummaryTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/marcellus"
-            android:text="@string/targetRemainingStr"
-            android:textColor="#432F2F"
-            android:layout_marginLeft="20dp"/>
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/remainingTargetValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:fontFamily="@font/marcellus"
-            android:text="@string/remainingTargetStr"
-            android:textColor="#432F2F" />
-  -->
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/marcellus"
+                android:text="@string/minTempStr"
+                android:textSize="18sp" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:background="?attr/colorOnSecondary"
-        android:fontFamily="@font/marcellus"
-        android:orientation="horizontal"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+            <TextView
+                android:id="@+id/minTempValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/marcellus"
+                android:text="@string/emptyStr"
+                android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/weatherTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="9dp"
-            android:fontFamily="@font/marcellus"
-            android:text="@string/weatherStr"
-            android:textSize="18sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/marcellus"
+                android:text="@string/maxTempStr"
+                android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/locationValue"
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="9dp"
-            android:fontFamily="@font/marcellus"
-            android:text=""
-            android:textSize="18sp" />
+            <TextView
+                android:id="@+id/maxTempValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/marcellus"
+                android:text="@string/emptyStr"
+                android:textSize="18sp" />
 
 
-    </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+            android:id="@+id/linearLayout9"
+            android:layout_width="407dp"
+            android:layout_height="90dp"
+            android:orientation="vertical">
+
+                <TextView
+                android:id="@+id/descText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/marcellus"
+                android:textSize="18sp" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
 
 
     <Button
@@ -157,7 +384,6 @@
         android:layout_width="420dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
-        android:backgroundTint="?attr/colorPrimaryVariant"
         android:fontFamily="@font/marcellus"
         android:onClick="aboutButtonOnClick"
         android:text="@string/aboutStr"
@@ -171,7 +397,7 @@
         android:layout_width="420dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
-        android:backgroundTint="?attr/colorPrimaryVariant"
+        android:background="?attr/colorPrimaryVariant"
         android:fontFamily="@font/marcellus"
         android:onClick="walksButtonOnClick"
         android:text="@string/walkSuggStr"
@@ -186,7 +412,6 @@
         android:layout_height="48dp"
         android:layout_gravity="center"
         android:layout_marginBottom="5dp"
-        android:backgroundTint="?attr/colorPrimaryVariant"
         android:fontFamily="@font/marcellus"
         android:onClick="settingsButtonOnClick"
         android:text="@string/settingsStr"
@@ -194,234 +419,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/walksButton"
         app:layout_constraintStart_toStartOf="@+id/walksButton" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout2"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout2"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-
-        <TextView
-            android:id="@+id/sunriseTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="7dp"
-            android:textSize="18sp"
-            android:fontFamily="@font/marcellus"
-            android:text="@string/sunriseStr" />
-
-        <TextView
-            android:id="@+id/sunriseValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="7dp"
-            android:fontFamily="@font/marcellus"
-            android:textSize="18sp"
-            android:text="@string/emptyStr"/>
-
-        <TextView
-            android:id="@+id/sunsetTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="7dp"
-            android:fontFamily="@font/marcellus"
-            android:text="@string/sunsetStr" />
-
-        <TextView
-            android:id="@+id/sunsetValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginTop="7dp"
-            android:layout_marginLeft="8dp"
-            android:fontFamily="@font/marcellus"
-            android:text="@string/emptyStr" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/marcellus"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout4"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="7dp"
-            android:fontFamily="@font/marcellus"
-            android:text="@string/tempStr"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/tempValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="7dp"
-            android:fontFamily="@font/marcellus"
-            android:text="@string/emptyStr"
-            android:textSize="18sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="7dp"
-            android:fontFamily="@font/marcellus"
-            android:text="@string/feelsStr"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/feelsLikeValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="7dp"
-            android:fontFamily="@font/marcellus"
-            android:text="@string/emptyStr"
-            android:textSize="18sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout6"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:fontFamily="@font/marcellus"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout5"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:fontFamily="@font/marcellus"
-            android:text="Min temp: "
-            android:layout_marginTop="7dp"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/minTempValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="1dp"
-            android:fontFamily="@font/marcellus"
-            android:layout_marginTop="7dp"
-            android:text="@string/emptyStr"
-            android:textSize="18sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:fontFamily="@font/marcellus"
-            android:layout_marginTop="7dp"
-            android:text="Max temp: "
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/maxTempValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="1dp"
-            android:layout_marginTop="7dp"
-            android:fontFamily="@font/marcellus"
-            android:text="@string/emptyStr"
-            android:textSize="18sp" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout9"
-        android:layout_width="407dp"
-        android:layout_height="90dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout6"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout6"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
-
-        <TextView
-            android:id="@+id/descText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="7dp"
-            android:fontFamily="@font/marcellus"
-            android:textSize="18sp" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout7"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:background="?attr/colorOnSecondary"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout3"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="7dp"
-            android:fontFamily="@font/marcellus"
-            android:text="@string/targetRemainingStr"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/remainingValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="7dp"
-            android:fontFamily="@font/marcellus"
-            android:textSize="18sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout8"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="?attr/colorOnSecondary"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout7"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout7"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
-
-        <Button
-            android:layout_width="180dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="20dp"
-            android:text="@string/viewWalksStr" />
-        <Button
-            android:layout_width="180dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/recordWalksStr" />
-    </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

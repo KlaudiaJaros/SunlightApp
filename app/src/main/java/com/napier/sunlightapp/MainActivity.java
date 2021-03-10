@@ -77,14 +77,18 @@ public class MainActivity extends AppCompatActivity {
         // get access to TextViews to display user settings:
         TextView welcomeString = (TextView)findViewById(R.id.welcomeTextView);
         TextView targetValue = (TextView)findViewById(R.id.dailyTargetValue);
+        TextView remainingTarget = (TextView)findViewById(R.id.remainingValue);
 
-        // if username and target not empty, display them:
+        // if username and targets are not empty, display them:
         if (UserSettings.getUserName()!=null){
-            welcomeString.setText(welcomeString.getText()+" "+ UserSettings.getUserName());
+            welcomeString.setText(R.string.welcomeStr+" "+ UserSettings.getUserName());
         }
         if(UserSettings.getTarget()!=null)
         {
             targetValue.setText(UserSettings.getTarget());
+        }
+        if(UserSettings.getRemainingTarget()!=null){
+            remainingTarget.setText(UserSettings.getRemainingTarget());
         }
 
         /*  LOCATION: */
@@ -257,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
         TextView locationTextView = findViewById(R.id.locationValue); // find the current city string
 
         Geocoder gcd = new Geocoder(this, Locale.getDefault()); // using Geocoder class to find the current city based on longitude and latitude
-        List<Address> addresses = null; // to store sample addresses
+        List<Address> addresses; // to store sample addresses
         try {
             addresses = gcd.getFromLocation(lat, lon, 10); // get a sample of addresses
             if (addresses.size() > 0) { // if not empty
@@ -271,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             else {
-                locationTextView.setText("No address found");
+                locationTextView.setText(R.string.noAddressStr);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -280,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case ACCESS_REQUEST_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
@@ -316,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Cahange current activity to AboutActivity
-     * @param view
+     * @param view view
      */
     public void aboutButtonOnClick(View view) {
         Intent aboutActivity = new Intent(MainActivity.this, AboutActivity.class);
@@ -325,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Changes current activity to WalksActivity
-     * @param view
+     * @param view view
      */
     public void walksButtonOnClick(View view) {
         // go to walks activity and pass the current city:
@@ -344,6 +348,23 @@ public class MainActivity extends AppCompatActivity {
         startActivity(settingsActivity);
     }
 
+    /**
+     * Changes the current activity to ViewWalksActivity
+     * @param view view
+     */
+    public void viewWalksButtonOnClick(View view) {
+        Intent viewWalksActivity = new Intent(MainActivity.this, ViewWalksActivity.class);
+        startActivity(viewWalksActivity);
+    }
+
+    /**
+     * Changes the current activity to RecordWalksActivity
+     * @param view view
+     */
+    public void recordWalksButtonOnClick(View view) {
+        Intent recordWalksActivity = new Intent(MainActivity.this, RecordWalksActivity.class);
+        startActivity(recordWalksActivity);
+    }
 
     private void connectWeatherAPI() throws IOException {
 
@@ -388,7 +409,7 @@ public class MainActivity extends AppCompatActivity {
                     long currentTime = calendar.getTimeInMillis();
                     long difference = sunset*1000 - currentTime;
 
-                    String sunriseTime="";
+                    String sunriseTime;
                     calendar.setTimeInMillis(sunrise*1000); // times 1000 because the time stamp is in milliseconds
                     if (calendar.get(Calendar.MINUTE)<10){ // because if it's 12:08 it displays it as 12:8
                         sunriseTime = calendar.get(Calendar.HOUR) + ".0" + calendar.get(Calendar.MINUTE) + " am";
@@ -397,7 +418,7 @@ public class MainActivity extends AppCompatActivity {
                         sunriseTime = calendar.get(Calendar.HOUR) + "." + calendar.get(Calendar.MINUTE) + " am";
                     }
 
-                    String sunsetTime="";
+                    String sunsetTime;
                     calendar.setTimeInMillis(sunset*1000);
                     if (calendar.get(Calendar.MINUTE)<10){ // because if it's 12:08 it displays it as 12:8
                         sunsetTime = calendar.get(Calendar.HOUR) + ".0" + calendar.get(Calendar.MINUTE) + " pm";
@@ -452,5 +473,4 @@ public class MainActivity extends AppCompatActivity {
         queue.add(jor);
 
     }
-
 }

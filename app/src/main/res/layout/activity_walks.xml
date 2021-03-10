@@ -18,7 +18,7 @@
 
     <LinearLayout
         android:layout_width="400dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:orientation="horizontal"
         android:fontFamily="@font/marcellus">
 
@@ -29,18 +29,23 @@
             android:layout_width="200dp"
             android:layout_height="30dp"
             android:textSize="18sp"
-            android:fontFamily="@font/marcellus"
-            />
+            android:fontFamily="@font/marcellus" />
 
         <TextView
             android:id="@+id/cityStr"
             android:fontFamily="@font/marcellus"
             android:layout_width="140dp"
             android:textSize="18sp"
-            android:layout_height="30dp"
-            />
+            android:layout_height="30dp"/>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/noCityText"
+        android:fontFamily="@font/marcellus"
+        android:layout_width="wrap_content"
+        android:textSize="18sp"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"/>
 
     <ListView
         android:id="@+id/walksList"

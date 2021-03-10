@@ -3,6 +3,8 @@ package com.napier.sunlightapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
+import android.widget.TextView;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -10,5 +12,10 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+
+        TextView link = (TextView) findViewById(R.id.link);
+        if (link != null) {
+            link.setMovementMethod(LinkMovementMethod.getInstance());
+        }
     }
 }

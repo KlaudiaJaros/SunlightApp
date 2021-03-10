@@ -32,4 +32,30 @@
     <string name="recordWalksStr">Record walks</string>
     <string name="viewWalksStr">View walks</string>
     <string name="walkSuggStr">Walk suggestions</string>
+    <string name="aboutIntroStr">The purpose of this app is to encourage you to go outside and enjoy the benefits of daylight. Studies have shown that as little as 15 min a day can benefit your well-being and improve your mood. </string>
+    <string name="impSleepStr">1. Improves your sleep</string>
+    <string name="benefitsStr">Benefits of sunlight:</string>
+    <string name="b1Str">Sunshine regulates your circadian rhythm by telling your body when to increase and decrease your melatonin levels. So, the more daylight exposure you can get, the better your body will produce melatonin when it’s time to go to sleep.</string>
+    <string name="redStressStr">2. Reduces stress</string>
+    <string name="b2Str">Melatonin also lowers stress reactivity and being outside will help your body naturally regulate melatonin, which can help reduce your stress level. Additionally, if you\'re doing something active when you’re outside (walking, playing, etc.), that extra exercise also helps to lower stress.</string>
+    <string name="depressStr">3. Fights off depression</string>
+    <string name="b3Str">Sunshine boosts your body’s level of serotonin, which is a chemical that improves your mood and helps you stay calm and focused. Increased exposure to natural light may help ease the symptoms of seasonal affective disorder - a change in mood that typically occurs in the fall and winter months when there are fewer hours of daylight.</string>
+    <string name="b4Str">Our bodies produce vitamin D when exposed to sunlight. Vitamin D is critical for your immune system, and with consistent exposure to sunlight, you can help strengthen it. A healthy immune system can help reduce the risk of illness, infections, some cancers, and mortality after surgery. One of the best ways to get vitamin D is by being outside.</string>
+    <string name="immuneStr">4. Strengthens your immune system and bones</string>
+    <string name="aboutOutroStr">Please be aware that there are many risks associated with sun exposure. Please read NHS Sunscreen and Sun Safety guideline to ensure you are not accidentally harming yourself. </string>
+    <string name="link"><a href="https://www.nhs.uk/live-well/healthy-body/sunscreen-and-sun-safety/">NHS Sun Safety link</a></string>
+    <string name="noteStr">Note:</string>
+    <string name="todayStr">"Today "</string>
+    <string name="walkedForStr">Walked for:</string>
+    <string name="achievedStr">"Target achieved: "</string>
+    <string name="notYetStr">not yet</string>
+    <string name="editWalkStr">Edit walk</string>
+    <string name="historyStr">Walk history:</string>
+    <string name="streakStr">Daily streak:</string>
+    <string name="daysRowStr">days in a row</string>
+    <string name="walksAvailableStr">Sorry, there are no walk suggestions for your location yet.</string>
+    <string name="yesStr">yes</string>
+    <string name="minTempStr" translatable="false">Min temp:</string>
+    <string name="maxTempStr" translatable="false">Max temp:</string>
+    <string name="noAddressStr">No address found</string>
 </resources>
