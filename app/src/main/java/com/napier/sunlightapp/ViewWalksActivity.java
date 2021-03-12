@@ -9,13 +9,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
  * Lets the user view past walks and today's walk and stats.
  */
 public class ViewWalksActivity extends AppCompatActivity {
+    private final String filename="walkHistory.csv";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,34 +37,52 @@ public class ViewWalksActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         String pattern = "dd-MM-yyy";
         String date = new SimpleDateFormat(pattern).format(calendar.getTime());
-        today.setText(R.string.todayStr+date+":");
+        String displayDate=this.getResources().getString(R.string.todayStr)+date+":";
+        today.setText(displayDate);
 
         // apply existing settings:
         if (UserSettings.getTarget()!=null){
             dailyTarget.setText(UserSettings.getTarget());
         }
-        if(UserSettings.getRemainingTarget()!=null ){
-            int remaining = Integer.parseInt(UserSettings.getRemainingTarget());
-            if(remaining<=0){
-                targetAchieved.setText(R.string.yesStr);
-            }
-            else{
-                targetAchieved.setText(R.string.notYetStr);
+
+        // to store past walks:
+        ArrayList<Walk> walks = new ArrayList<>();
+
+        // using FileInputStream, try to open the app's file:
+        FileInputStream fis = null;
+        try {
+            fis = this.openFileInput(filename);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        // if successful, load the walk history and put it in the ArrayList:
+        if(fis!=null) {
+            UserSettings.loadWalkHistory(fis);
+            walks=UserSettings.getWalks();
+
+            // if the latest walk data is today, display walked for:
+            if(UserSettings.isLatestWalkWasToday()){
+                walkedFor.setText(Integer.toString(UserSettings.getLastWalk().getWalkTime()));
             }
         }
 
-        // display past walks:
-        final String[] pastWalks = new String[]
-                { "Walk 1", "Walk 2", "Walk 3", "Walk 4",
-                        "Walk 5", "Walk 6", "Walk 7"};
+        // display if the target was achieved:
+        if(UserSettings.isTargetAchieved()){
+            targetAchieved.setText(R.string.yesStr);
+        }
+        else{
+            targetAchieved.setText(R.string.notYetStr);
+        }
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+        // adapter to display past walks:
+        ArrayAdapter<Walk> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1,
-                pastWalks);
+                walks);
 
         walksHistory.setAdapter(adapter);
         walksHistory.setContentDescription("Past walks");
+
     }
 
     public void editWalkButtonOnClick(View view) {

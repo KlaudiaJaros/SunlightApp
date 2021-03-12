@@ -24,14 +24,14 @@
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="match_parent"
-                android:layout_height="267dp"
+                android:layout_height="300dp"
                 app:srcCompat="@drawable/bridge"
                 android:contentDescription="bridge_picture" />
 
             <TextView
                 android:id="@+id/aboutTextView"
-                android:layout_width="252dp"
-                android:layout_height="51dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:fontFamily="@font/marcellus"
@@ -43,26 +43,27 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:fontFamily="@font/marcellus"
+                android:gravity="center"
                 android:text="@string/aboutIntroStr"
-                android:layout_marginLeft="15dp"
-                android:textColor="?attr/colorPrimaryVariant"
-                android:layout_marginRight="15dp"/>
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="18dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="25sp"
+                android:textSize="28sp"
                 android:fontFamily="@font/marcellus"
+                android:layout_gravity="center"
                 android:text="@string/benefitsStr"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
                 android:layout_marginRight="15dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"
                 android:fontFamily="@font/marcellus"
                 android:text="@string/impSleepStr"

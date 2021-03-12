@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/recordWalksTextView"
-        android:layout_width="247dp"
+        android:layout_width="wrap_content"
         android:layout_height="58dp"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
@@ -24,7 +24,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout1"
-        android:layout_width="220dp"
+        android:layout_width="wrap_content"
         android:layout_height="31dp"
         android:layout_marginTop="88dp"
         android:orientation="horizontal"
@@ -91,7 +91,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/actualTargetValue"
+            android:id="@+id/walkedForValue"
             android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
@@ -126,8 +126,9 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout11" />
 
     <EditText
+        android:id="@+id/notesEdit"
         android:layout_width="284dp"
-        android:layout_height="38dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/marcellus"
         android:maxLength="50"
@@ -142,10 +143,13 @@
         android:hint="Walk type, place, thoughts.."/>
 
     <Button
-        android:layout_width="wrap_content"
+        android:id="@+id/saveButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
         android:text="@string/saveExitStr"
+        android:textSize="20sp"
+        android:fontFamily="@font/marcellus"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

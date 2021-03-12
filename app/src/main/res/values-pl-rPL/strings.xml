@@ -20,7 +20,7 @@
     <string name="targetSummaryStr">Ustaw swój dzienny cel tutaj. <br> Sugerujemy tylko 15 do 30 minut dziennie by rozchmurzyć swój nastrój, polepszyć koncentracje i cieszyć się spokojnym snem.  </br></string>
     <string name="saveExitStr">Zapisz i wróć</string>
     <string name="locationNotFoundStr">Lokalizacja nie znaleziona</string>
-    <string name="walksInfoStr">Spacery na podstawie Twojej lokalizacji:</string>
+    <string name="walksInfoStr">w Twojej lokalizacji:</string>
     <string name="channel_name">SunlightSpacer</string>
     <string name="channel_description">Przypomnienia o pójciu na spacer</string>
     <string name="tempStr">Temperatura:</string>
@@ -30,7 +30,7 @@
     <string name="aboutSunlightStr">O Sunlight</string>
     <string name="feelsStr">Odczuwalna:</string>
     <string name="recordWalksStr">Edytuj</string>
-    <string name="viewWalksStr">Zobacz</string>
+    <string name="yourWalksStr">Zobacz</string>
     <string name="walkSuggStr">Sugerowane spacery</string>
     <string name="noAddressStr">Nie znaleziono adresu</string>
     <string name="yesStr">tak</string>
@@ -49,12 +49,16 @@
     <string name="immuneStr">4. Wzmacnia układ odpornościowy i kości</string>
     <string name="aboutIntroStr">Celem tej aplikacji jest zachęcenie użytkownika do wyjścia na zewnątrz by cieszyć się korzyściami światła dziennego. Badania wykazały, że juz 15 min dziennie może polepszyć Twoje samopoczucie i humor.</string>
     <string name="impSleepStr">1. Ulepsza sen</string>
-    <string name="benefitsStr">Korzyści światla dziennego:</string>
+    <string name="benefitsStr">Korzyści światla dziennego</string>
     <string name="redStressStr">2. Redukuje stress</string>
     <string name="depressStr">3. Pomaga w depresji</string>
     <string name="b1Str">Świato dzienne reguluje Twój cykl dobowy poprzez zwiekszanie i zmniejszanie produkcji milatonimy w Twoim ciele. Tak więc, im więcej przebywasz w świetle dziennym, tym więcej melatoniny zostanie wyprodukowane wieczorem, gdy będziesz przygotowywać się do snu.</string>
     <string name="b2Str">Melatonina także zmniejsza poczucie stresu a bycie na zewnątrz naturalnie reguluje jej wydzielanie, co wspomaga redukcje poziomu stresu. Co więcej, jeśli spędzasz swój czas na zewnątrz aktywnie np. poprzez spererowanie czy granie w piłkę, tym bardziej zmiejszasz poczucie stresu.</string>
     <string name="b3Str">Swiatło słoneczne zwiększa poziom seratoniny w Twoim ciele, czyli hormonu który polepsza Twoje samopoczucie, pomga zachować spokój i zwiększa Twoją uwagę.  Zwiększona ekspozycja na naturalne światło może pomóc złagodzić objawy sezonowego zaburzenia afektywnego - zmiany nastroju, która zwykle występuje jesienią i zimą, kiedy jest mniej godzin światła dziennego.</string>
     <string name="b4Str">Nasze ciała wytwarzają witaminę D pod wpływem światła słonecznego. Witamina D ma kluczowe znaczenie dla układu odpornościowego, a dzięki stałej ekspozycji na światło słoneczne możesz go wzmocnić. Zdrowy układ odpornościowy może pomóc zmniejszyć ryzyko chorób, infekcji, niektórych nowotworów i śmiertelności po operacji. Jednym z najlepszych sposobów na zdobycie witaminy D jest przebywanie na zewnątrz.</string>
+    <string name="noDataStr">Brak danych na ten moment.</string>
+    <string name="targetLeftStr">Pozostało: </string>
+    <string name="windStr">Prędkość wiatru: </string>
+    <string name="descStr">Opis: </string>
 
 </resources>

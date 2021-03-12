@@ -32,8 +32,13 @@ public class SettingsActivity extends AppCompatActivity {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        // pull existing user settings:
-        UserSettings.loadUserSettings(fis);
+
+        if(fis!=null){
+            // pull existing user settings:
+            UserSettings.loadUserSettings(fis);
+        }
+
+
         userName=UserSettings.getUserName();
         target=UserSettings.getTarget();
         notificationsEnabled=UserSettings.getNotificationsEnabled();
@@ -51,14 +56,9 @@ public class SettingsActivity extends AppCompatActivity {
         {
             userTargetText.setText(target);
         }
-        if (notificationsEnabled.equals("true")){
-            notificationsSwitch.setChecked(true);
-        }
-        else{
-            notificationsSwitch.setChecked(false);
-        }
+        notificationsSwitch.setChecked(notificationsEnabled.equals("true"));
 
-        // Open a FileOutputStream to prapare for writing to a file:
+        // Open a FileOutputStream to prepare for writing to a file:
         FileOutputStream fos = null;
         try {
             fos = this.openFileOutput(filename, Context.MODE_PRIVATE);
@@ -119,11 +119,15 @@ public class SettingsActivity extends AppCompatActivity {
                             target=targetEdit;
                             String toSave = userName+","+target+','+notificationsEnabled;
                             finalFos.write(toSave.getBytes());
+                            finalFos.flush();
                             returnToMain();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
+                }
+                else{
+                    Toast.makeText(getBaseContext(), "Nothing to save", Toast.LENGTH_LONG).show();
                 }
 
                 // display information for the user if their input was incorrect:

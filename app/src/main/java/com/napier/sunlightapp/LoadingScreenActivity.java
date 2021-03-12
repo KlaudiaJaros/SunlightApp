@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ProgressBar;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 /**
  * Activity that shows the app's loading screen with the app logo.
  */

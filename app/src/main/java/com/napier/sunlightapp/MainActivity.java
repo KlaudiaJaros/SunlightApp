@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private String currentCity;
 
     private final String filename = "userSettings.csv";
+    private final String filename2="walkHistory.csv";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,24 +73,51 @@ public class MainActivity extends AppCompatActivity {
         catch (FileNotFoundException e){
             e.printStackTrace();
         }
-        UserSettings.loadUserSettings(fis);
+        if(fis!=null){
+            UserSettings.loadUserSettings(fis);
+        }
+
+        // open FileInputStream to load walk history:
+        fis = null;
+        try{
+            fis = this.openFileInput(filename2);
+        }
+        catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+        if(fis!=null){
+            UserSettings.loadWalkHistory(fis);
+        }
 
         // get access to TextViews to display user settings:
         TextView welcomeString = (TextView)findViewById(R.id.welcomeTextView);
         TextView targetValue = (TextView)findViewById(R.id.dailyTargetValue);
         TextView remainingTarget = (TextView)findViewById(R.id.remainingValue);
+        TextView targetAchieved = (TextView)findViewById(R.id.targetAchieved);
 
         // if username and targets are not empty, display them:
         if (UserSettings.getUserName()!=null){
-            welcomeString.setText(R.string.welcomeStr+" "+ UserSettings.getUserName());
+            String displayWelcome=this.getResources().getString((R.string.welcomeStr))+" "+ UserSettings.getUserName();
+            welcomeString.setText(displayWelcome);
         }
         if(UserSettings.getTarget()!=null)
         {
             targetValue.setText(UserSettings.getTarget());
         }
-        if(UserSettings.getRemainingTarget()!=null){
-            remainingTarget.setText(UserSettings.getRemainingTarget());
+
+
+        // display if the target was achieved:
+        if(UserSettings.isTargetAchieved()){
+            targetAchieved.setText(R.string.yesStr);
+            // display remaining target:
+            remainingTarget.setText("0");
         }
+        else{
+            targetAchieved.setText(R.string.notYetStr);
+            // display remaining target:
+            remainingTarget.setText(Integer.toString(UserSettings.getRemainingTarget()));
+        }
+
 
         /*  LOCATION: */
         // Acquire a reference to the system Location Manager
@@ -153,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                     // print to the console:
                     System.out.println("location change: lon and lat: "+lon + " " + lat);
 
-                    Toast.makeText(getBaseContext(), locationString, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getBaseContext(), locationString, Toast.LENGTH_LONG).show();
                     setCity();
                     try {
                         connectWeatherAPI();
@@ -319,7 +347,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Cahange current activity to AboutActivity
+     * Change current activity to AboutActivity
      * @param view view
      */
     public void aboutButtonOnClick(View view) {
@@ -377,6 +405,7 @@ public class MainActivity extends AppCompatActivity {
         TextView sunsetEdit = (TextView)findViewById(R.id.sunsetValue);
         TextView sunlightLeftEdit = (TextView)findViewById(R.id.sunlightLeftValue);
         TextView descEdit = (TextView)findViewById(R.id.descText);
+        TextView windSpeedEdit = (TextView)findViewById(R.id.windSpeedValue);
 
         // url to OpenWeatherMap API:
         String url = "https://api.openweathermap.org/data/2.5/weather?lat=" +lat+ "&lon=" + lon + "&appid=38ed18e5f6d4211046e1cf89af573e7a&units=metric";
@@ -387,19 +416,21 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     JSONObject mainObj = response.getJSONObject("main"); // for temperatures
                     JSONObject sysObj = response.getJSONObject("sys"); // for sunset/sunrise
+                    JSONObject windObj = response.getJSONObject("wind"); // for wind
 
                     JSONArray array=response.getJSONArray("weather");
                     JSONObject object = array.getJSONObject(0);
 
                     // to format floats:
                     DecimalFormat df = new DecimalFormat();
-                    df.setMaximumFractionDigits(0);
+                    df.setMaximumFractionDigits(1);
 
                     // get the weather information from the response:
                     String temp = df.format(mainObj.getDouble("temp"));
                     String minTemp=df.format(mainObj.getDouble("temp_min"));
                     String maxTemp=df.format(mainObj.getDouble("temp_max"));
                     String feelsLike = df.format(mainObj.getDouble("feels_like"));
+                    double windSpeed = windObj.getDouble("speed");
                     String description = object.getString("description");
 
                     long sunrise = sysObj.getLong("sunrise");
@@ -436,7 +467,14 @@ public class MainActivity extends AppCompatActivity {
                     feelsLikeEdit.setText(feelsLike + " ºC");
                     sunriseEdit.setText(sunriseTime);
                     sunsetEdit.setText(sunsetTime);
-                    descEdit.setText("Description: " + description);
+                    String descToDisplay=getString(R.string.descStr) + " " + description;
+                    descEdit.setText(descToDisplay);
+
+                    windSpeed=windSpeed*2.237; // change meters per second to mph
+                    df.setMaximumFractionDigits(0);
+                    windSpeedEdit.setText(df.format(windSpeed));
+
+
 
                     difference=difference/1000;
                     float minuteDifference = difference/60;

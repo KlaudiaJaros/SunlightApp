@@ -51,18 +51,19 @@ public class WalkDetailsActivity extends AppCompatActivity {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         // Create a storage reference from our app
         StorageReference storageRef = storage.getReference();
+
         // Create a child reference
-        // imagesRef now points to the city
+        StorageReference photoRef = storageRef.child(city+"/"+walk+".jpg"); // e.i. go to dir: city/photo.jpg
 
-        StorageReference cityRef = storageRef.child(city);
-        StorageReference photoRef = storageRef.child(city+"/"+walk+".jpg");
-
+        // try downloading the photo from Firebase storage:
         final long ONE_MEGABYTE = 1024 * 1024; // CAUTION: photos in Firebase storage cannot exceed 1MB
         photoRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
-                // Data for "images/island.jpg" is returns, use this as needed
+                // Data for "city/photo.jpg" is returned
+                // create a BitMap to store the byte array as a bitmap
                 Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                // display image bitmap:
                 walkImage.setImageBitmap(bm);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -75,10 +76,10 @@ public class WalkDetailsActivity extends AppCompatActivity {
         // Access a Cloud Firestore instance:
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        city =city.toLowerCase(); // collection names are saved all lowercase
+        String cityLower =city.toLowerCase(); // collection names are saved all lowercase
 
         // open the Firebase collection:
-        DocumentReference docRef = db.collection("walks").document(city);
+        DocumentReference docRef = db.collection("walks").document(cityLower);
         String finalWalk = walk;
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             private static final String TAG = "Firebase" ;

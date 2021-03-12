@@ -10,7 +10,7 @@
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="403dp"
+        android:layout_width="match_parent"
         android:layout_height="16dp"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,8 +19,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="401dp"
-        android:layout_height="477dp"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
         android:contentDescription="loading image"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="@+id/progressBar"
@@ -30,8 +30,9 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="331dp"
+        android:layout_width="wrap_content"
         android:layout_height="85dp"
+        android:layout_gravity="center"
         android:layout_marginBottom="10dp"
         android:contentDescription="sunlight logo"
         app:layout_constraintBottom_toBottomOf="parent"

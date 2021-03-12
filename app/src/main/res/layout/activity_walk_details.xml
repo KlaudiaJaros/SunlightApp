@@ -7,48 +7,63 @@
     android:background="?attr/colorOnPrimary"
     tools:context=".WalkDetailsActivity">
 
-    <TextView
-        android:id="@+id/walkTitleTextView"
-        android:layout_width="369dp"
-        android:layout_height="58dp"
-        android:layout_gravity="center"
-        android:layout_margin="30dp"
-        android:fontFamily="@font/marcellus"
-        android:text="Arthur Seat Walk"
-        android:textColor="?attr/colorPrimaryVariant"
-        android:textSize="36sp"
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Description:"
-        app:layout_constraintEnd_toEndOf="@+id/walkTitleTextView"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/walkTitleTextView"
-        app:layout_constraintTop_toBottomOf="@+id/walkTitleTextView" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/fullDescText"
-        android:layout_width="371dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text=""
-        app:layout_constraintEnd_toEndOf="@+id/walkTitleTextView"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="@+id/textView" />
+            <TextView
+                android:id="@+id/walkTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="30dp"
+                android:fontFamily="@font/marcellus"
+                android:text="@string/walksStr"
+                android:textColor="?attr/colorPrimaryVariant"
+                android:textSize="36sp" />
 
-    <ImageView
-        android:id="@+id/walkImageView"
-        android:layout_width="415dp"
-        android:layout_height="273dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fullDescText"
-        app:srcCompat="@drawable/plain_background" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:text="@string/descStr"
+                android:fontFamily="@font/marcellus"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/fullDescText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:fontFamily="@font/marcellus"
+                android:text=""
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/walkImageView"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:contentDescription="@string/walkImageStr"
+                app:srcCompat="@drawable/plain_background" />
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
