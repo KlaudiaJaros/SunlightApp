@@ -32,6 +32,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +45,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-
+/**
+ * Main Activity for Sunlight.
+ */
 public class MainActivity extends AppCompatActivity {
 
     // Create a global variable for the system Location Manager and Listener:
@@ -53,13 +56,15 @@ public class MainActivity extends AppCompatActivity {
     // The identifier for which permission request has been answered:
     private static final int ACCESS_REQUEST_LOCATION = 0;
 
-    // Location:
+    // To store location:
     private double lat;
     private double lon;
     private String currentCity;
 
-    private final String filename = "userSettings.csv";
-    private final String filename2="walkHistory.csv";
+    // User settings filenames:
+    private final String settingsFilename = "userSettings.csv";
+    private final String walksFilename ="walkHistory.csv";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,24 +73,24 @@ public class MainActivity extends AppCompatActivity {
         // open FileInputStream to apply user settings:
         FileInputStream fis = null;
         try{
-            fis = this.openFileInput(filename);
+            fis = this.openFileInput(settingsFilename);
         }
         catch (FileNotFoundException e){
             e.printStackTrace();
         }
-        if(fis!=null){
+        if(fis!=null){ // only if opened successfully
             UserSettings.loadUserSettings(fis);
         }
 
         // open FileInputStream to load walk history:
         fis = null;
         try{
-            fis = this.openFileInput(filename2);
+            fis = this.openFileInput(walksFilename);
         }
         catch (FileNotFoundException e){
             e.printStackTrace();
         }
-        if(fis!=null){
+        if(fis!=null){ // only if opened successfully
             UserSettings.loadWalkHistory(fis);
         }
 
@@ -105,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
             targetValue.setText(UserSettings.getTarget());
         }
 
-
         // display if the target was achieved:
         if(UserSettings.isTargetAchieved()){
             targetAchieved.setText(R.string.yesStr);
@@ -123,13 +127,6 @@ public class MainActivity extends AppCompatActivity {
         // Acquire a reference to the system Location Manager
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
 
             // Handle the case we don't have the necessary permission
             if (ContextCompat.checkSelfPermission(this,
@@ -162,10 +159,12 @@ public class MainActivity extends AppCompatActivity {
             // pull weather data:
             try {
                 connectWeatherAPI();
-            } catch (IOException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+
+
         // Define a listener that responds to location updates
         locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
@@ -181,11 +180,10 @@ public class MainActivity extends AppCompatActivity {
                     // print to the console:
                     System.out.println("location change: lon and lat: "+lon + " " + lat);
 
-                    //Toast.makeText(getBaseContext(), locationString, Toast.LENGTH_LONG).show();
                     setCity();
                     try {
                         connectWeatherAPI();
-                    } catch (IOException e) {
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
@@ -225,7 +223,6 @@ public class MainActivity extends AppCompatActivity {
             setLocationUpdateFunction();
         }
 
-
         /* Notifications: */
         if (UserSettings.getNotificationsEnabled().equals("true")){
             createNotificationChannel();
@@ -244,21 +241,8 @@ public class MainActivity extends AppCompatActivity {
             // notificationId is a unique int for each notification that you must define
             notificationManager.notify(1, builder.build());
         }
-
-
-
     }
 
-
-    /**
-     * Goes back to Loading Screen Activity and launches the app again if the user uses the back button
-     */
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent loadActivity = new Intent(MainActivity.this, LoadingScreenActivity.class);
-        startActivity(loadActivity);
-    }
 
     /**
      * Creates a notification channel to allow Sunlight send notifications:
@@ -312,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
         switch (requestCode) {
             case ACCESS_REQUEST_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
@@ -345,6 +329,130 @@ public class MainActivity extends AppCompatActivity {
         locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER,
                 MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, locationListener);
     }
+
+    /**
+     * Creates a JSON object request and a queue using Volley to get data from OpenWeatherAPI. If successful, it sets text to all weather related TextViews using the received data.
+     * @throws JSONException Thrown to indicate a problem with the JSON API
+     */
+    private void connectWeatherAPI() throws JSONException {
+
+        // to edit activity elements:
+        TextView tempEdit = (TextView)findViewById(R.id.tempValue);
+        TextView minTempEdit = (TextView)findViewById(R.id.minTempValue);
+        TextView maxTempEdit = (TextView)findViewById(R.id.maxTempValue);
+        TextView feelsLikeEdit = (TextView)findViewById(R.id.feelsLikeValue);
+        TextView sunriseEdit = (TextView) findViewById(R.id.sunriseValue);
+        TextView sunsetEdit = (TextView)findViewById(R.id.sunsetValue);
+        TextView sunlightLeftEdit = (TextView)findViewById(R.id.sunlightLeftValue);
+        TextView descEdit = (TextView)findViewById(R.id.descText);
+        TextView windSpeedEdit = (TextView)findViewById(R.id.windSpeedValue);
+
+        // url to connect to OpenWeatherMap API:
+        String url = "https://api.openweathermap.org/data/2.5/weather?lat=" +lat+ "&lon=" + lon + "&appid=38ed18e5f6d4211046e1cf89af573e7a&units=metric";
+        // Open a Volley request for a JSON object:
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new com.android.volley.Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    // get JSON objects from the response:
+                    JSONObject mainObj = response.getJSONObject("main"); // for temperatures
+                    JSONObject sysObj = response.getJSONObject("sys"); // for sunset/sunrise
+                    JSONObject windObj = response.getJSONObject("wind"); // for wind
+                    JSONArray array=response.getJSONArray("weather"); // for weather description
+                    JSONObject object = array.getJSONObject(0);
+
+                    // to format floats:
+                    DecimalFormat df = new DecimalFormat();
+                    df.setMaximumFractionDigits(1);
+
+                    // get the weather information from the JSON objects:
+                    String temp = df.format(mainObj.getDouble("temp"));
+                    String minTemp=df.format(mainObj.getDouble("temp_min"));
+                    String maxTemp=df.format(mainObj.getDouble("temp_max"));
+                    String feelsLike = df.format(mainObj.getDouble("feels_like"));
+                    double windSpeed = windObj.getDouble("speed");
+                    String description = object.getString("description");
+                    long sunrise = sysObj.getLong("sunrise"); // in seconds UTS
+                    long sunset = sysObj.getLong("sunset");
+
+                    // calculate how much daylight is left:
+                    Calendar calendar = Calendar.getInstance();
+                    long currentTime = calendar.getTimeInMillis(); // get the current time
+                    long difference = sunset*1000 - currentTime; // times 1000 because the calendar current time is in milliseconds
+
+                    String sunriseTime; // to hold a string with sunrise time ready to display
+                    calendar.setTimeInMillis(sunrise*1000); // give the calendar UTS time in milliseconds (*1000) to then get normal time min and hr
+                    if (calendar.get(Calendar.MINUTE)<10){ // because if it's 12:08 it displays it as 12:8
+                        sunriseTime = calendar.get(Calendar.HOUR) + ".0" + calendar.get(Calendar.MINUTE) + " am"; // add a zero
+                    }
+                    else{ // display as normal
+                        sunriseTime = calendar.get(Calendar.HOUR) + "." + calendar.get(Calendar.MINUTE) + " am";
+                    }
+
+                    String sunsetTime; // to hold a string with sunrise time ready to display
+                    calendar.setTimeInMillis(sunset*1000); // give the calendar UTS time in milliseconds (*1000) to then get normal time min and hr
+                    if (calendar.get(Calendar.MINUTE)<10){ // because if it's 12:08 it displays it as 12:8
+                        sunsetTime = calendar.get(Calendar.HOUR) + ".0" + calendar.get(Calendar.MINUTE) + " pm"; // add a zero
+                    }
+                    else{ // display as normal
+                        sunsetTime = calendar.get(Calendar.HOUR) + "." + calendar.get(Calendar.MINUTE) + " pm";
+                    }
+
+                    // debug:
+                    System.out.println("Sunrise: " + sunriseTime + ", sunset: " + sunsetTime + ", current time: " + currentTime + ", difference: " + difference);
+
+                    // set all of the pulled data as text in the TextViews:
+                    tempEdit.setText(temp+" ºC");
+                    minTempEdit.setText(minTemp+" ºC");
+                    maxTempEdit.setText(maxTemp+" ºC");
+                    feelsLikeEdit.setText(feelsLike + " ºC");
+                    sunriseEdit.setText(sunriseTime);
+                    sunsetEdit.setText(sunsetTime);
+                    String descToDisplay=getString(R.string.descStr) + " " + description;
+                    descEdit.setText(descToDisplay);
+
+                    windSpeed=windSpeed*2.237; // change meters per second to mph
+                    df.setMaximumFractionDigits(0);
+                    windSpeedEdit.setText(df.format(windSpeed));
+
+                    difference=difference/1000; // daylight left
+                    float minuteDifference = difference/60; // get minutes
+
+                    // if there is an hour or more left and the current time is past the sunrise time (e.i. not in the middle of the night)
+                    if (minuteDifference>=60 && currentTime>=(sunrise*1000)) {
+                        int hour= (int) (minuteDifference/60); // get the hours
+                        int minutes = (int) (minuteDifference%60); // get the minutes
+                        // display in the sunlight left TestView:
+                        sunlightLeftEdit.setText(hour+ " hours " + minutes + "min");
+                    }
+                    // if there is less than an hour left:
+                    else if (minuteDifference>0 && currentTime>=(sunrise*1000)){
+                        int minutes = (int)(minuteDifference%60); // get the minutes left only
+                        sunlightLeftEdit.setText(minutes + " min"); // set as text
+                    }
+                    // any other case - no sunlight left:
+                    else{
+                        sunlightLeftEdit.setText("0");
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),"Error loading weather data.",Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
+            }
+        }
+    );
+        // create a Volley request and add it to the queue:
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(jsonObjectRequest);
+    }
+
+    // Buttons onClick methods below:
 
     /**
      * Change current activity to AboutActivity
@@ -394,121 +502,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(recordWalksActivity);
     }
 
-    private void connectWeatherAPI() throws IOException {
-
-        // to edit activity elements:
-        TextView tempEdit = (TextView)findViewById(R.id.tempValue);
-        TextView minTempEdit = (TextView)findViewById(R.id.minTempValue);
-        TextView maxTempEdit = (TextView)findViewById(R.id.maxTempValue);
-        TextView feelsLikeEdit = (TextView)findViewById(R.id.feelsLikeValue);
-        TextView sunriseEdit = (TextView) findViewById(R.id.sunriseValue);
-        TextView sunsetEdit = (TextView)findViewById(R.id.sunsetValue);
-        TextView sunlightLeftEdit = (TextView)findViewById(R.id.sunlightLeftValue);
-        TextView descEdit = (TextView)findViewById(R.id.descText);
-        TextView windSpeedEdit = (TextView)findViewById(R.id.windSpeedValue);
-
-        // url to OpenWeatherMap API:
-        String url = "https://api.openweathermap.org/data/2.5/weather?lat=" +lat+ "&lon=" + lon + "&appid=38ed18e5f6d4211046e1cf89af573e7a&units=metric";
-        // open a request for a JSON object:
-        JsonObjectRequest jor = new JsonObjectRequest(Request.Method.GET, url, null, new com.android.volley.Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONObject mainObj = response.getJSONObject("main"); // for temperatures
-                    JSONObject sysObj = response.getJSONObject("sys"); // for sunset/sunrise
-                    JSONObject windObj = response.getJSONObject("wind"); // for wind
-
-                    JSONArray array=response.getJSONArray("weather");
-                    JSONObject object = array.getJSONObject(0);
-
-                    // to format floats:
-                    DecimalFormat df = new DecimalFormat();
-                    df.setMaximumFractionDigits(1);
-
-                    // get the weather information from the response:
-                    String temp = df.format(mainObj.getDouble("temp"));
-                    String minTemp=df.format(mainObj.getDouble("temp_min"));
-                    String maxTemp=df.format(mainObj.getDouble("temp_max"));
-                    String feelsLike = df.format(mainObj.getDouble("feels_like"));
-                    double windSpeed = windObj.getDouble("speed");
-                    String description = object.getString("description");
-
-                    long sunrise = sysObj.getLong("sunrise");
-                    long sunset = sysObj.getLong("sunset");
-
-                    Calendar calendar = Calendar.getInstance();
-                    long currentTime = calendar.getTimeInMillis();
-                    long difference = sunset*1000 - currentTime;
-
-                    String sunriseTime;
-                    calendar.setTimeInMillis(sunrise*1000); // times 1000 because the time stamp is in milliseconds
-                    if (calendar.get(Calendar.MINUTE)<10){ // because if it's 12:08 it displays it as 12:8
-                        sunriseTime = calendar.get(Calendar.HOUR) + ".0" + calendar.get(Calendar.MINUTE) + " am";
-                    }
-                    else{
-                        sunriseTime = calendar.get(Calendar.HOUR) + "." + calendar.get(Calendar.MINUTE) + " am";
-                    }
-
-                    String sunsetTime;
-                    calendar.setTimeInMillis(sunset*1000);
-                    if (calendar.get(Calendar.MINUTE)<10){ // because if it's 12:08 it displays it as 12:8
-                        sunsetTime = calendar.get(Calendar.HOUR) + ".0" + calendar.get(Calendar.MINUTE) + " pm";
-                    }
-                    else{
-                        sunsetTime = calendar.get(Calendar.HOUR) + "." + calendar.get(Calendar.MINUTE) + " pm";
-                    }
-
-
-                    System.out.println("Sunrise: " + sunriseTime + ", sunset: " + sunsetTime + ", current time: " + currentTime + ", difference: " + difference);
-
-                    tempEdit.setText(temp+" ºC");
-                    minTempEdit.setText(minTemp+" ºC");
-                    maxTempEdit.setText(maxTemp+" ºC");
-                    feelsLikeEdit.setText(feelsLike + " ºC");
-                    sunriseEdit.setText(sunriseTime);
-                    sunsetEdit.setText(sunsetTime);
-                    String descToDisplay=getString(R.string.descStr) + " " + description;
-                    descEdit.setText(descToDisplay);
-
-                    windSpeed=windSpeed*2.237; // change meters per second to mph
-                    df.setMaximumFractionDigits(0);
-                    windSpeedEdit.setText(df.format(windSpeed));
-
-
-
-                    difference=difference/1000;
-                    float minuteDifference = difference/60;
-
-                    if (minuteDifference>=60 && currentTime>=(sunrise*1000)) {
-                        int hour= (int) (minuteDifference/60);
-                        int minutes = (int) (minuteDifference%60);
-
-                        sunlightLeftEdit.setText(hour+ " hours " + minutes + "min");
-                    }
-                    else if (minuteDifference>0 && currentTime>=(sunrise*1000)){
-                        int minutes = (int)(minuteDifference%60);
-                        sunlightLeftEdit.setText(minutes + " min");
-                    }
-                    else{
-
-                        sunlightLeftEdit.setText("0");
-                    }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        }
-    );
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(jor);
-
+    /**
+     * Goes back to Loading Screen Activity and launches the app again if the user uses the back button
+     */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent loadActivity = new Intent(MainActivity.this, LoadingScreenActivity.class);
+        startActivity(loadActivity);
     }
 }

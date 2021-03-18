@@ -10,14 +10,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
+
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
+/**
+ * Settings Activity for displaying and editing user settings.
+ */
 public class SettingsActivity extends AppCompatActivity {
+    // to store user settings:
     private String userName ;
     private String target ;
     private String notificationsEnabled="true"; //default
+    // filename where all user settings are stored:
     private final String filename = "userSettings.csv";
 
     @Override
@@ -32,16 +39,13 @@ public class SettingsActivity extends AppCompatActivity {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        if(fis!=null){
+        if(fis!=null){ // if successful
             // pull existing user settings:
             UserSettings.loadUserSettings(fis);
+            userName=UserSettings.getUserName();
+            target=UserSettings.getTarget();
+            notificationsEnabled=UserSettings.getNotificationsEnabled();
         }
-
-
-        userName=UserSettings.getUserName();
-        target=UserSettings.getTarget();
-        notificationsEnabled=UserSettings.getNotificationsEnabled();
 
         // get access to layout fields and switch:
         EditText userNameText= (EditText)findViewById(R.id.userNameValue);
@@ -58,15 +62,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
         notificationsSwitch.setChecked(notificationsEnabled.equals("true"));
 
-        // Open a FileOutputStream to prepare for writing to a file:
-        FileOutputStream fos = null;
-        try {
-            fos = this.openFileOutput(filename, Context.MODE_PRIVATE);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        // final version of the FileOutputStream to use inside onClick:
-        FileOutputStream finalFos = fos;
+        File path = this.getFilesDir(); // path to UserData where user settings are saved
 
         // save and exit button logic:
         Button saveButton = (Button)findViewById(R.id.saveExitButton);
@@ -82,20 +78,20 @@ public class SettingsActivity extends AppCompatActivity {
 
                 // check if username needs saving/updating, if yes, validate input:
                 if (userName!=null && userNameEdit!=null){
-                    newUsername = !userName.equals(userNameEdit);
+                    newUsername = !userName.equals(userNameEdit); // compare existing username to the one in EditText
                     validUsername = userNameEdit.length()>=0 && userNameEdit.length()<=11 ;
                 }
-                else if(userNameEdit!=null){
+                else if(userNameEdit!=null){ // no existing username, only validate input
                     newUsername=true;
                     validUsername = userNameEdit.length()>=0 && userNameEdit.length()<=11 ;
                 }
 
                 // check if target needs saving/updating, if yes, validate input:
                 if (target!=null && targetEdit!=null){
-                    newTarget = !target.equals(targetEdit);
+                    newTarget = !target.equals(targetEdit); // compare existing target to the one in EditText
                     validTarget = targetEdit.length()>=0 && targetEdit.length()<=3  && TextUtils.isDigitsOnly(targetEdit);
                 }
-                else if(targetEdit!=null){
+                else if(targetEdit!=null){ // no existing target, just validate the new one
                     newTarget=true;
                     validTarget = targetEdit.length()>=0 && targetEdit.length()<=3  && TextUtils.isDigitsOnly(targetEdit);
                 }
@@ -106,7 +102,7 @@ public class SettingsActivity extends AppCompatActivity {
                 if (notificationsSwitch.isChecked()){
                     newNotificationSetting="true";
                 }
-                if (!newNotificationSetting.equals(notificationsEnabled)){
+                if (!newNotificationSetting.equals(notificationsEnabled)){ // compare existing setting to the actual one
                     notificationsEnabled=newNotificationSetting;
                     newNotification=true;
                 }
@@ -118,15 +114,26 @@ public class SettingsActivity extends AppCompatActivity {
                             userName=userNameEdit;
                             target=targetEdit;
                             String toSave = userName+","+target+','+notificationsEnabled;
-                            finalFos.write(toSave.getBytes());
-                            finalFos.flush();
+
+                            // create a file:
+                            File file = new File(path, filename);
+                            // Open a FileOutputStream to write to a file:
+                            FileOutputStream fos = null;
+                            try {
+                                fos = new FileOutputStream(file);
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
+
+                            fos.write(toSave.getBytes());
+                            fos.flush();
                             returnToMain();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }
-                else{
+                else{ // no new setting detected
                     Toast.makeText(getBaseContext(), "Nothing to save", Toast.LENGTH_LONG).show();
                 }
 

@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,9 +22,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * Lets the user record today's walk and edit it.
+ *  Record Walks Activity class - lets the user record today's walk and edit it.
  */
 public class RecordWalksActivity extends AppCompatActivity {
+    // filename for storing walks:
     private final String filename="walkHistory.csv";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +49,6 @@ public class RecordWalksActivity extends AppCompatActivity {
         if (UserSettings.getTarget()!=null){
             dailyTarget.setText(UserSettings.getTarget());
         }
-        // TODO: saved walked for value
 
         // using FileInputStream, try to open the app's file:
         FileInputStream fis = null;
@@ -72,9 +74,9 @@ public class RecordWalksActivity extends AppCompatActivity {
             }
         }
 
+        File path = this.getFilesDir(); // path to UserData for saving user's walks
 
-        File path = this.getFilesDir();
-
+        // Save button onClick:
         Button saveBtn = (Button)findViewById(R.id.saveButton);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,45 +84,45 @@ public class RecordWalksActivity extends AppCompatActivity {
 
                 int walkTime=0;
                 String notes="";
+                String notesEditText=String.valueOf(notesEdit.getText());
 
-                boolean validNote = notesEdit.getText()!=null && notesEdit.getText().length()>0;
-                boolean validTime =walkedFor.getText()!=null && walkedFor.getText().length()>0;
+                // to check if user's input is valid:
+                boolean validNote = notesEdit.getText()!=null && notesEditText.length()>0 && !notesEditText.contains(",");
+                boolean validTime =walkedFor.getText()!=null && walkedFor.getText().length()>0 & TextUtils.isDigitsOnly(walkedFor.getText());
 
                 if(validNote){
-                    notes= String.valueOf(notesEdit.getText());
+                    notes= notesEditText;
+                }
+                else {
+                    Toast.makeText(getBaseContext(), "Your note can't be longer than 50 chars and have commas.", Toast.LENGTH_LONG).show();
                 }
                 if(validTime){
                     walkTime=Integer.parseInt(String.valueOf(walkedFor.getText()));
                 }
+                else {
+                    Toast.makeText(getBaseContext(), "Walk time must be a number and no greater than 999.", Toast.LENGTH_LONG).show();
+                }
 
                 if(validNote && validTime){
+                    // create a Walk object to be saved:
                     Walk walkToSave = new Walk();
                     walkToSave.setDate(date);
                     walkToSave.setWalkTime(walkTime);
                     walkToSave.setNotes(notes);
 
-                    //FileOutputStream fos = openFileOutput(filename, MODE_APPEND);
+                    // open a file in the UserData internal storage:
                     File file = new File(path, filename);
                     try {
+                        // pass it to UserSettings class to save it:
                         UserSettings.saveWalk(file, walkToSave);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
+                    // return to Main Activity:
+                    Intent mainActivity = new Intent(RecordWalksActivity.this, MainActivity.class);
+                    startActivity(mainActivity);
                 }
-
-                Intent mainActivity = new Intent(RecordWalksActivity.this, MainActivity.class);
-                startActivity(mainActivity);
-            }
-
-            private FileOutputStream openFileOutput(String filename, int modePrivate) {
-                File file = new File(getFilesDir(), filename);
-                boolean deleted = file.delete();
-
-                // Open a FileOutputStream to prepare for writing to a file:
-                FileOutputStream fos ;
-                fos=this.openFileOutput(filename, Context.MODE_APPEND);
-                return fos;
             }
         });
     }

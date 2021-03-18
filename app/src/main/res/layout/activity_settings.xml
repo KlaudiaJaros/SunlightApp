@@ -50,6 +50,7 @@
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textSize="18sp"
+                android:hint="Your name"
                 android:autofillHints="username"
                 android:inputType="text" />
 
@@ -89,6 +90,7 @@
                 android:maxLength="3"
                 android:maxLines="1"
                 android:singleLine="true"
+                android:hint="15"
                 android:textSize="18sp"
                 android:autofillHints="dailyTarget"
                 android:inputType="number" />

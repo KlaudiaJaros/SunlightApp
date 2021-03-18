@@ -21,7 +21,7 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:contentDescription="loading image"
+        android:contentDescription="@string/loadingImage"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="@+id/progressBar"
         app:layout_constraintStart_toStartOf="@+id/progressBar"
@@ -30,14 +30,12 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="85dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="10dp"
-        android:contentDescription="sunlight logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/sunlightLogo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:srcCompat="@drawable/logo_2" />
+        app:srcCompat="@drawable/logo_rect2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

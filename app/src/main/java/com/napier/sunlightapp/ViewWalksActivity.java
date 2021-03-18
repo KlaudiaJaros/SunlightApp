@@ -16,9 +16,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
- * Lets the user view past walks and today's walk and stats.
+ * View Walks Activity - lets the user view past walks and today's walk and stats.
  */
 public class ViewWalksActivity extends AppCompatActivity {
+    // filename for storing walk history:
     private final String filename="walkHistory.csv";
 
     @Override
@@ -85,6 +86,10 @@ public class ViewWalksActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Opens Record Walks Activity to edit today's walk.
+     * @param view view
+     */
     public void editWalkButtonOnClick(View view) {
         Intent recordWalks = new Intent(ViewWalksActivity.this, RecordWalksActivity.class);
         startActivity(recordWalks);

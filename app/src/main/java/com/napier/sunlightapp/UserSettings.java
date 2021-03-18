@@ -81,7 +81,6 @@ public class UserSettings {
      */
     public static void loadUserSettings(FileInputStream fis){
         /* Read from a file located in the internal storage directory provided by the system for this and only this app: */
-
         InputStreamReader inputStreamReader;
         // read from the file using InputStreamReader:
         inputStreamReader = new InputStreamReader(fis, Charset.defaultCharset());
@@ -102,9 +101,6 @@ public class UserSettings {
                 if (!words[2].equals("null")){
                     notificationsEnabled=words[2];
                 }
-                /*if(!words[3].equals("null")){
-                    remainingTarget=words[3];
-                }*/
                 line = reader.readLine();
             }
         } catch (Exception e) {
@@ -112,20 +108,23 @@ public class UserSettings {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Loads the walk history from the provided File Input Stream
+     * @param fis File Input Stream from where to read
+     */
     public static void loadWalkHistory(FileInputStream fis){
         /* Read from a file located in the internal storage directory provided by the system for this and only this app: */
-
-        walks.clear();
+        walks.clear(); // clear the existing walk list
 
         InputStreamReader inputStreamReader;
-        // read from the file using InputStreamReader:
+        // read from the file using the provided InputStreamReader:
         inputStreamReader = new InputStreamReader(fis, Charset.defaultCharset());
-
         try {
             BufferedReader reader = new BufferedReader(inputStreamReader);
 
             String line = reader.readLine();
-            while(line!=null){
+            while(line!=null){ // loop through the lines
                 Walk walk=new Walk();
                 String[] words = line.split(",");
                 if (!words[0].equals("null")){
@@ -140,19 +139,11 @@ public class UserSettings {
                 walks.add(walk);
                 line = reader.readLine();
             }
-            System.out.println("loadWalkHistory(): Walks size: " + walks.size() + ", list all: ");
-            for (Walk w: walks){
-                System.out.println(w.toString());
-            }
+
         } catch (Exception e) {
             // Error occurred when opening raw file for reading.
             e.printStackTrace();
         }
-
-        /*Walk w1 = new Walk("11-03-2021",20, "Portobello");
-        Walk w2 = new Walk("10-03-2021", 30, "Pilrig");
-        walks.add(w1);
-        walks.add(w2);*/
 
         // if there are past walks:
         if(walks.size()>0){
@@ -164,7 +155,7 @@ public class UserSettings {
             String pattern = "dd-MM-yyy";
             String date = new SimpleDateFormat(pattern).format(calendar.getTime());
 
-            // the the latest walk date and today's date are the same:
+            // if the latest walk's date and today's date are the same:
             if(date.equals(lastWalk.getDate())){
                 // set latest walk was today as true:
                 latestWalkWasToday=true;
@@ -200,37 +191,26 @@ public class UserSettings {
                 }
             }
         }
-    }/*
-    public static void saveWalk(FileOutputStream fos, Walk walkToSave){
+    }
 
-        if(isLatestWalkWasToday()){
-            walks.remove(walks.size()-1);
-        }
-        walks.add(walkToSave);
-
-        try {
-            assert fos != null;
-            for(Walk w: walks){
-                String toSave = w.getDate()+","+w.getWalkTime()+','+w.getNotes()+"\n";
-                fos.write(toSave.getBytes()); // wrong?
-                fos.flush();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
+    /**
+     * Saves a new walk to walk history file.
+     * @param file File to where the walk needs to be saved
+     * @param walkToSave Walk to save
+     * @throws IOException FileOutputStream exception
+     */
     public static void saveWalk(File file, Walk walkToSave) throws IOException {
-
+        // check if the latest walk is today (editing a walk case):
         if(isLatestWalkWasToday()){
-            walks.remove(0);
+            walks.remove(0); // remove the last walk
         }
-        walks.add(0, walkToSave);
+        walks.add(0, walkToSave); // add a new walk to the beginning of the walk list
 
         // store only 30 last walks:
         if(walks.size()>30){
-            walks.remove(walks.size()-1);
+            walks.remove(walks.size()-1); // remove the oldest walk
         }
-
+        // save all the walks:
         FileOutputStream stream = new FileOutputStream(file);
         try {
             for(Walk w: walks){
@@ -238,6 +218,8 @@ public class UserSettings {
                 stream.write(toSave.getBytes());
             }
 
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
             stream.close();
         }

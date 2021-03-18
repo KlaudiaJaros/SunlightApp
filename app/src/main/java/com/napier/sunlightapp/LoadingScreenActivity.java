@@ -20,10 +20,12 @@ public class LoadingScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading_screen);
 
+        // Progress bar:
         ProgressBar progressBar = findViewById(R.id.progressBar);
         progressBar.setIndeterminate(false);
         progressBar.setProgress(0);
 
+        // Progress bar progress:
             new Handler().postDelayed(new Runnable(){
                 public void run() {
                     progressBar.setProgress(100);

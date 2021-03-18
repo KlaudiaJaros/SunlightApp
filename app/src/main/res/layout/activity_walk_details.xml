@@ -51,6 +51,15 @@
                 android:text=""
                 android:textSize="18sp" />
 
+            <TextView
+                android:id="@+id/link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:fontFamily="@font/marcellus"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="5dp" />
+
             <ImageView
                 android:id="@+id/walkImageView"
                 android:layout_width="match_parent"

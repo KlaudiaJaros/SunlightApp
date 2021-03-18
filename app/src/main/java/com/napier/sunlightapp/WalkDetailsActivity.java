@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,7 +24,9 @@ import com.google.firebase.storage.StorageReference;
 import java.util.Map;
 
 
-
+/**
+ * Walk Details Activity - displays walk details of a walk chosen in the previous activity.
+ */
 public class WalkDetailsActivity extends AppCompatActivity {
 
     @Override
@@ -30,12 +34,13 @@ public class WalkDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walk_details);
 
-        // to change the activity view:
+        // get the activity elements:
         TextView walkDescription = (TextView)findViewById(R.id.fullDescText);
         TextView walkTitle = (TextView)findViewById(R.id.walkTitleTextView);
         ImageView walkImage = (ImageView)findViewById(R.id.walkImageView);
+        TextView mapLink = (TextView)findViewById(R.id.link);
 
-        // get the walk name from the previous activity:
+        // get the walk name and city from the previous activity:
         Intent intent = getIntent();
         String walk="";
         String city="";
@@ -49,10 +54,10 @@ public class WalkDetailsActivity extends AppCompatActivity {
 
         /* Firebase Storage: */
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        // Create a storage reference from our app
+        // Create a storage reference
         StorageReference storageRef = storage.getReference();
 
-        // Create a child reference
+        // Create a child reference to get the photo for the walk:
         StorageReference photoRef = storageRef.child(city+"/"+walk+".jpg"); // e.i. go to dir: city/photo.jpg
 
         // try downloading the photo from Firebase storage:
@@ -61,7 +66,7 @@ public class WalkDetailsActivity extends AppCompatActivity {
             @Override
             public void onSuccess(byte[] bytes) {
                 // Data for "city/photo.jpg" is returned
-                // create a BitMap to store the byte array as a bitmap
+                // create a BitMap to store the byte array as a bitmap:
                 Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 // display image bitmap:
                 walkImage.setImageBitmap(bm);
@@ -69,18 +74,20 @@ public class WalkDetailsActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
+                exception.printStackTrace();
             }
         });
 
         // Access a Cloud Firestore instance:
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        String cityLower =city.toLowerCase(); // collection names are saved all lowercase
+        String cityLower =city.toLowerCase(); // my collection names are saved all lowercase
 
-        // open the Firebase collection:
+        // open the Firebase collection to pull walk description by city:
         DocumentReference docRef = db.collection("walks").document(cityLower);
         String finalWalk = walk;
+
+        // get the walk description from the city document:
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             private static final String TAG = "Firebase" ;
 
@@ -90,13 +97,42 @@ public class WalkDetailsActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Map<String,Object> walkDetails = document.getData();
+                        // get the walk description of the chosen walk:
                         walkDescription.setText(String.valueOf(walkDetails.get(finalWalk)));
-                        //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                     } else {
                         Log.d(TAG, "No such document");
                     }
                 } else {
-                    Log.d(TAG, "get failed with ", task.getException());
+                    Log.d(TAG, "Error getting the document ", task.getException());
+                }
+            }
+        });
+
+        // open the Firebase collection to pull walk location links by city:
+        docRef = db.collection("walks").document(cityLower+"_links");
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            private static final String TAG = "Firebase" ;
+
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String,Object> walkDetails = document.getData();
+                        // Based on the walk name, it gets the right location link:
+                        String linkString =String.valueOf(walkDetails.get(finalWalk+"_link"));
+                        String linkedText = "<b>Google Maps:</b>  Click " +
+                                String.format("<a href=\"%s\">here</a> ", linkString) +
+                                "to see the walk location.";
+                        mapLink.setText(Html.fromHtml(linkedText)); // set the link
+                        mapLink.setMovementMethod(LinkMovementMethod.getInstance());
+
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "Error getting the document", task.getException());
                 }
             }
         });

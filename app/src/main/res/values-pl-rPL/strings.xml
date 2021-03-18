@@ -60,5 +60,6 @@
     <string name="targetLeftStr">Pozostało: </string>
     <string name="windStr">Prędkość wiatru: </string>
     <string name="descStr">Opis: </string>
+    <string name="notesHint">Typ spaceru, miejsce, przemyślenia...</string>
 
 </resources>

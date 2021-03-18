@@ -63,5 +63,8 @@
     <string name="windStr">Wind speed: </string>
     <string name="mphStr" translatable="false">mph</string>
     <string name="descStr">Description: </string>
-    <string name="walkImageStr">Walk image</string>
+    <string name="walkImageStr" translatable="false">Walk image</string>
+    <string name="sunlightLogo" translatable="false">sunlight logo</string>
+    <string name="loadingImage" translatable="false">loading image</string>
+    <string name="notesHint">Walk type, place, thoughts..</string>
 </resources>

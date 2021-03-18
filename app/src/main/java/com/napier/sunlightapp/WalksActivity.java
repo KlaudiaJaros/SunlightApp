@@ -26,6 +26,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Activity to display all available walks from Firebase based on user's location.
+ */
 public class WalksActivity extends AppCompatActivity {
 
     @Override
@@ -33,20 +36,22 @@ public class WalksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walks);
 
+        // Get the TextViews and ListView references:
         ListView walksList = (ListView) findViewById(R.id.walksList);
         TextView noCity = (TextView)findViewById(R.id.noCityText);
+        TextView cityTV = (TextView) findViewById(R.id.cityStr);
 
+        // Retrieve passed information from the previous activity:
         Intent intent = getIntent();
         String city = Objects.requireNonNull(intent.getExtras()).getString("city");
-        TextView cityTV = (TextView) findViewById(R.id.cityStr);
-        cityTV.setText(city);
+        cityTV.setText(city); // set the current city
 
         // Access a Cloud Firestore instance:
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        String cityLower =city.toLowerCase(); // collection names are saved all lowercase
+        String cityLower =city.toLowerCase(); // my collection names are saved all lowercase
 
-        // open the Firebase collection:
+        // open the Firebase collection and get the city specific document:
         DocumentReference docRef = db.collection("walks").document(cityLower);
 
         // to store downloaded walks:
@@ -57,14 +62,14 @@ public class WalksActivity extends AppCompatActivity {
                 android.R.id.text1,
                 listOfWalks);
 
-        // get walks from document:
+        // get walks from the city document:
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
+
                     DocumentSnapshot document = task.getResult();
                     if(document.exists()){
-
                         // get document(city) data(walks):
                         Map<String, Object> map = document.getData();
                         if (map != null) {
@@ -83,10 +88,11 @@ public class WalksActivity extends AppCompatActivity {
                             walksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    Object o = walksList.getItemAtPosition(position);
-                                    String element=(String)o;//As you are using Default String Adapter
-                                    Toast.makeText(getApplicationContext(),element,Toast.LENGTH_SHORT).show();
+                                    Object o = walksList.getItemAtPosition(position); // get the object the user picked
+                                    String element=(String)o; // cast to String because I'm using a String Adapter
+                                    Toast.makeText(getApplicationContext(),element,Toast.LENGTH_SHORT).show(); // display which walk the user picked
 
+                                    // Open the WalkDetailsActivity and pass user's choice along to display the right walk details:
                                     Intent walkDetails = new Intent(WalksActivity.this, WalkDetailsActivity.class);
                                     walkDetails.putExtra("walk", element);
                                     walkDetails.putExtra("city", city);
@@ -95,91 +101,20 @@ public class WalksActivity extends AppCompatActivity {
                                 }
                             });
                         }
-                        else {
+                        else { // list of walks is empty:
                             noCity.setText(R.string.walksAvailableStr);
                         }
                     }
-                    else{
-                        System.out.println("Error: document doesn't exist");
+                    else{ // no such document exists in Firebase:
+                        Log.d("TAG", "No such document");
                         noCity.setText(R.string.walksAvailableStr);
                     }
                 }
-                else {
+                else { // task unsuccessful:
                     Log.d("TAG", "Error getting documents: ", task.getException());
                     noCity.setText(R.string.walksAvailableStr);
                 }
             }
         });
-
-        /*db.collection("walks")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("TAG", document.getId() + " => " + document.getData());
-                                System.out.println("FIREBASE: " + document.getId() + document.getData());
-                            }
-                        } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
-                            System.out.println("Error getting documents: " +task.getException());
-                        }
-                    }
-                });*/
-
-
-
-        /*
-        String[] walks = new String[6];
-        if (city.equals("Edinburgh") || city.equals("Glasgow")){
-            if (city.equals("Edinburgh"))
-            {
-                walks = new String[]
-                        { "Arthur Seat",
-                                "Calton Hill",
-                                "Princes Gardens",
-                                "Royal Botanic Garden",
-                                "Portobello Beach",
-                                "Dean Village"};
-            }
-            else if(city.equals("Glasgow")){
-                walks = new String[]
-                        {"River Clyde Walk",
-                                "Kelvingrove Park"};
-            }
-
-            // set the array adapter with the correct walks based on the city:
-            final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                    android.R.layout.simple_list_item_1,
-                    android.R.id.text1,
-                    walks);
-            walksList.setAdapter(adapter);
-            walksList.setContentDescription("Walks selection");
-
-            // add a on item click listener to open WalkDetailsActivity:
-            String finalCity = city;
-            walksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Object o = walksList.getItemAtPosition(position);
-                    String element=(String)o;//As you are using Default String Adapter
-                    Toast.makeText(getApplicationContext(),element,Toast.LENGTH_SHORT).show();
-
-                    Intent walkDetails = new Intent(WalksActivity.this, WalkDetailsActivity.class);
-                    walkDetails.putExtra("walk", element);
-                    walkDetails.putExtra("city", finalCity);
-                    setResult(1, walkDetails);
-                    startActivity(walkDetails);
-
-                }
-            });
-        }
-        else {
-            TextView noCity = (TextView)findViewById(R.id.noCityText);
-            noCity.setText(R.string.walksAvailableStr);
-        }
-
-         */
     }
 }
