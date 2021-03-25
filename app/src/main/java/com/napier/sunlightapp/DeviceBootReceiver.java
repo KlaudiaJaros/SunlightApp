@@ -13,6 +13,7 @@ import java.util.Calendar;
  */
 public class DeviceBootReceiver extends BroadcastReceiver {
     public static boolean notificationEnabled=true;
+    public static int hour=11;
     @Override
     public void onReceive(Context context, Intent intent) {
         // check if boot completed:
@@ -26,7 +27,7 @@ public class DeviceBootReceiver extends BroadcastReceiver {
 
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
-            calendar.set(Calendar.HOUR_OF_DAY, UserSettings.getNotificationTime());
+            calendar.set(Calendar.HOUR_OF_DAY, hour);
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.SECOND, 0);
 

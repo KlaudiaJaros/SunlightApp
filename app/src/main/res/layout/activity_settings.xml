@@ -54,6 +54,7 @@
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textSize="18sp"
+                android:fontFamily="@font/marcellus"
                 android:hint="Your name"
                 android:autofillHints="username"
                 android:inputType="text" />
@@ -87,7 +88,7 @@
 
             <EditText
                 android:id="@+id/userTargetValue"
-                android:layout_width="80dp"
+                android:layout_width="50dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="10dp"
                 android:fontFamily="@font/marcellus"
@@ -121,10 +122,11 @@
 
         <Switch
             android:id="@+id/notificationsSwitch"
-            android:layout_width="366dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="35dp"
             android:checked="true"
             android:fontFamily="@font/marcellus"
             android:text="@string/receiveNotificationsStr"
@@ -146,9 +148,7 @@
             <Spinner
                 android:id="@+id/notificationTime"
                 android:layout_width="wrap_content"
-                android:fontFamily="@font/marcellus"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
                 android:layout_marginLeft="10dp"/>
         </LinearLayout>
 

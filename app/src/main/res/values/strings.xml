@@ -68,7 +68,7 @@
     <string name="loadingImage" translatable="false">loading image</string>
     <string name="notesHint">Walk type, place, thoughts..</string>
     <string name="setNotifiStr">Notify me at </string>
-    <string name="locationUnAvailableStr">Sorry, couldn\'t determine your location. Please ensure Sunlight has location permission and internet access.</string>
+    <string name="internetUnavailableStr">Sorry, couldn\'t load walk suggestions. Please ensure Sunlight has internet access and/or location permission.</string>
     <string-array name="times_array">
         <item>0:00</item><item>1:00</item><item>2:00</item>
         <item>3:00</item><item>4:00</item><item>5:00</item>

@@ -111,13 +111,13 @@ public class WalksActivity extends AppCompatActivity {
                     }
                     else { // task unsuccessful:
                         Log.d("TAG", "Error getting documents: ", task.getException());
-                        noCity.setText(R.string.walksAvailableStr);
+                        noCity.setText(R.string.internetUnavailableStr);
                     }
                 }
             });
         }
         else {
-            noCity.setText(R.string.locationUnAvailableStr);
+            noCity.setText(R.string.internetUnavailableStr);
         }
     }
 }

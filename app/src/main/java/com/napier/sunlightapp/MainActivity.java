@@ -240,23 +240,23 @@ public class MainActivity extends AppCompatActivity {
             DeviceBootReceiver.notificationEnabled=true;
 
             // run this only the first time you open the app:
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            if (!prefs.getBoolean("firstTime", false)) {
+            //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            //if (!prefs.getBoolean("firstTime", false)) {
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(System.currentTimeMillis());
                 calendar.set(Calendar.HOUR_OF_DAY, UserSettings.getNotificationTime());
-                calendar.set(Calendar.MINUTE, 1);
-                calendar.set(Calendar.SECOND, 1);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
 
                 manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                         AlarmManager.INTERVAL_DAY, pendingIntent);
 
                 // set first time to true:
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putBoolean("firstTime", true);
-                editor.apply();
-            }
+               // SharedPreferences.Editor editor = prefs.edit();
+               // editor.putBoolean("firstTime", true);
+               // editor.apply();
+            //}
         }
         // if notifications are off, cancel the alarm manager:
         else{
@@ -340,9 +340,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1000; // 10 meters
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000; // 1 second
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
 //    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
 
     @SuppressLint("MissingPermission")

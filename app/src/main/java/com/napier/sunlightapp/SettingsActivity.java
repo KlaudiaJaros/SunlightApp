@@ -69,7 +69,7 @@ public class SettingsActivity extends AppCompatActivity {
                             //"16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"};
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.times_array, android.R.layout.simple_spinner_item);
+                R.array.times_array, R.layout.my_spinner);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
@@ -160,7 +160,7 @@ public class SettingsActivity extends AppCompatActivity {
                 if(notificationTime!=notificationTimeSpinner.getSelectedItemPosition()){
                     newNotification=true;
                     // set the new notification time with the Alarm Manager:
-                    changeAlarmManagerTime(notificationTimeSpinner.getSelectedItemPosition());
+                    //changeAlarmManagerTime(notificationTimeSpinner.getSelectedItemPosition());
                 }
 
                 // save the new/updated settings:
@@ -171,7 +171,7 @@ public class SettingsActivity extends AppCompatActivity {
                             target=targetEdit;
                             notificationTime= notificationTimeSpinner.getSelectedItemPosition();
                             String toSave = userName+","+target+','+notificationsEnabled+','+notificationTime;
-
+                            DeviceBootReceiver.hour=notificationTime;
 
                             // create a file:
                             File file = new File(path, filename);
@@ -221,7 +221,7 @@ public class SettingsActivity extends AppCompatActivity {
      * Changes the alarm manager time used to display notifications
      * @param newTime
      */
-
+/*
     private void changeAlarmManagerTime(int newTime){
 
         Intent intent = new Intent(this, AlarmReceiver.class);
@@ -240,6 +240,5 @@ public class SettingsActivity extends AppCompatActivity {
                 AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
-
-
+ */
 }

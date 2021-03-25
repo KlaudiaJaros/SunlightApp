@@ -62,5 +62,6 @@
     <string name="descStr">Opis: </string>
     <string name="notesHint">Typ spaceru, miejsce, przemyślenia...</string>
     <string name="setNotifiStr">"Powiadomienie o "</string>
+    <string name="internetUnavailableStr">Przepraszamy, nie udało nam się pobrać sugerowanych spacerów. Upewnij się, że Sunglight ma dostęp do internetu oraz pozwolenie na użycie Twojej lokalizacji.</string>
 
 </resources>
