@@ -87,7 +87,7 @@ public class RecordWalksActivity extends AppCompatActivity {
                 String notesEditText=String.valueOf(notesEdit.getText());
 
                 // to check if user's input is valid:
-                boolean validNote = notesEdit.getText()!=null && notesEditText.length()>0 && !notesEditText.contains(",");
+                boolean validNote = notesEdit.getText()!=null && notesEditText.length()>=0 && !notesEditText.contains(",");
                 boolean validTime =walkedFor.getText()!=null && walkedFor.getText().length()>0 & TextUtils.isDigitsOnly(walkedFor.getText());
 
                 if(validNote){
@@ -108,7 +108,10 @@ public class RecordWalksActivity extends AppCompatActivity {
                     Walk walkToSave = new Walk();
                     walkToSave.setDate(date);
                     walkToSave.setWalkTime(walkTime);
-                    walkToSave.setNotes(notes);
+                    if (notes.length()==0)
+                        walkToSave.setNotes(" ");
+                    else
+                        walkToSave.setNotes(notes);
 
                     // open a file in the UserData internal storage:
                     File file = new File(path, filename);

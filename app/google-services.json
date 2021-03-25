@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "364498897995",
+    "project_id": "sunlight-91f8e",
+    "storage_bucket": "sunlight-91f8e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364498897995:android:34aed4e548ead00eb2d1ce",
+        "android_client_info": {
+          "package_name": "com.napier.sunlightapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "364498897995-m8gbhoqag1vmevvevv9pqpsmaqn7p4ik.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZNPsEHtyct6fiuJ1K0QPmDh-g7V6pMGg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "364498897995-m8gbhoqag1vmevvevv9pqpsmaqn7p4ik.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

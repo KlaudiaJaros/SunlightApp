@@ -24,6 +24,7 @@ public class UserSettings {
     private static int remainingTarget;
     private static boolean targetAchieved=false;
     private static String notificationsEnabled = "true"; // default
+    private static int notificationTime=11; //default
     private static ArrayList<Walk> walks = new ArrayList<>();
     private static boolean latestWalkWasToday=false;
     private static Walk lastWalk;
@@ -50,6 +51,14 @@ public class UserSettings {
      */
     public static String getNotificationsEnabled() {
         return notificationsEnabled;
+    }
+
+    /**
+     * Gets the notification time
+     * @return int hour time
+     */
+    public static int getNotificationTime(){
+        return notificationTime;
     }
 
     /**
@@ -97,9 +106,13 @@ public class UserSettings {
                 }
                 if (!words[1].equals("null")){
                     target=words[1];
+                    remainingTarget=Integer.parseInt(words[1]);
                 }
                 if (!words[2].equals("null")){
                     notificationsEnabled=words[2];
+                }
+                if(!words[3].equals("null")){
+                    notificationTime=Integer.parseInt(words[3]);
                 }
                 line = reader.readLine();
             }

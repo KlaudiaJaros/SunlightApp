@@ -26,7 +26,7 @@
     <string name="emptyStr" translatable="false"> </string>
     <string name="notSetStr">not set</string>
     <string name="dailyReminderStr">Daily reminder to enjoy the sunlight! </string>
-    <string name="dailyReminderContentStr">Only 15 min a day can improve your mood and general wellbeing. </string>
+    <string name="dailyReminderContentStr">Only 15 min a day can improve your mood and general wellbeing. Put your shoes on! </string>
     <string name="aboutSunlightStr">About Sunlight</string>
     <string name="feelsStr">Feels like:</string>
     <string name="recordWalksStr">Record walks</string>
@@ -67,4 +67,15 @@
     <string name="sunlightLogo" translatable="false">sunlight logo</string>
     <string name="loadingImage" translatable="false">loading image</string>
     <string name="notesHint">Walk type, place, thoughts..</string>
+    <string name="setNotifiStr">Notify me at </string>
+    <string name="locationUnAvailableStr">Sorry, couldn\'t determine your location. Please ensure Sunlight has location permission and internet access.</string>
+    <string-array name="times_array">
+        <item>0:00</item><item>1:00</item><item>2:00</item>
+        <item>3:00</item><item>4:00</item><item>5:00</item>
+        <item>6:00</item><item>7:00</item><item>8:00</item>
+        <item>9:00</item><item>10:00</item><item>11:00</item>
+        <item>12:00</item><item>13:00</item><item>14:00</item>
+        <item>15:00</item><item>16:00</item><item>17:00</item><item>18:00</item>
+        <item>19:00</item><item>20:00</item><item>21:00</item><item>22:00</item><item>23:00</item>
+    </string-array>
 </resources>

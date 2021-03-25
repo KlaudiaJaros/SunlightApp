@@ -8,10 +8,14 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -20,6 +24,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -120,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
             targetAchieved.setText(R.string.notYetStr);
             // display remaining target:
             remainingTarget.setText(Integer.toString(UserSettings.getRemainingTarget()));
+
         }
 
 
@@ -205,8 +211,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-
-
         // Handle the case we don't have the necessary permission
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -224,25 +228,42 @@ public class MainActivity extends AppCompatActivity {
         }
 
         /* Notifications: */
+        // create an Alarm Manager and set the alarm time:
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+
         if (UserSettings.getNotificationsEnabled().equals("true")){
+
             createNotificationChannel();
+            DeviceBootReceiver.notificationEnabled=true;
 
-            String contentStr=this.getString(R.string.dailyReminderContentStr);
-            String titleStr = this.getString(R.string.dailyReminderStr);
+            // run this only the first time you open the app:
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            if (!prefs.getBoolean("firstTime", false)) {
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "SunlightChannel")
-                    .setSmallIcon(R.drawable.ic_stat_name)
-                    .setContentTitle(titleStr)
-                    .setContentText(contentStr)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(System.currentTimeMillis());
+                calendar.set(Calendar.HOUR_OF_DAY, UserSettings.getNotificationTime());
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
 
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                        AlarmManager.INTERVAL_DAY, pendingIntent);
 
-            // notificationId is a unique int for each notification that you must define
-            notificationManager.notify(1, builder.build());
+                // set first time to true:
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean("firstTime", true);
+                editor.apply();
+            }
+        }
+        // if notifications are off, cancel the alarm manager:
+        else{
+            manager.cancel(pendingIntent);
+            DeviceBootReceiver.notificationEnabled=false;
         }
     }
-
 
     /**
      * Creates a notification channel to allow Sunlight send notifications:
