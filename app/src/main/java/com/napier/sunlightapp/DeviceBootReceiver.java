@@ -12,11 +12,12 @@ import java.util.Calendar;
  * Class to set the alarm for notifications after the device reboots.
  */
 public class DeviceBootReceiver extends BroadcastReceiver {
+    // store user settings:
     public static boolean notificationEnabled=true;
     public static int hour=11;
     @Override
     public void onReceive(Context context, Intent intent) {
-        // check if boot completed:
+        // check if boot completed and notifications are enabled:
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED") && notificationEnabled) {
             // on device boot complete, reset the alarm
             Intent alarmIntent = new Intent(context, AlarmReceiver.class);

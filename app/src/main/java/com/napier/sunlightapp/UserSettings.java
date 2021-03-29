@@ -104,14 +104,21 @@ public class UserSettings {
                 if (!words[0].equals("null")){
                     userName=words[0];
                 }
-                if (!words[1].equals("null")){
+                else{
+                    userName="";
+                }
+                if (!words[1].equals("null") && words[1].length()>0){
                     target=words[1];
                     remainingTarget=Integer.parseInt(words[1]);
+                }
+                else{
+                    target="";
+                    remainingTarget=0;
                 }
                 if (!words[2].equals("null")){
                     notificationsEnabled=words[2];
                 }
-                if(!words[3].equals("null")){
+                if(!words[3].equals("null") && words[3].length()>0){
                     notificationTime=Integer.parseInt(words[3]);
                 }
                 line = reader.readLine();
@@ -189,6 +196,9 @@ public class UserSettings {
                 if(remainingTarget<=0){
                     // set target achieved as true:
                     targetAchieved=true;
+                }
+                else{
+                    targetAchieved=false;
                 }
             }
         }

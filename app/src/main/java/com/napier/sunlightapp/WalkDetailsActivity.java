@@ -111,6 +111,7 @@ public class WalkDetailsActivity extends AppCompatActivity {
         // open the Firebase collection to pull walk location links by city:
         docRef = db.collection("walks").document(cityLower+"_links");
 
+        // get the location link form the document:
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             private static final String TAG = "Firebase" ;
 
@@ -122,10 +123,12 @@ public class WalkDetailsActivity extends AppCompatActivity {
                         Map<String,Object> walkDetails = document.getData();
                         // Based on the walk name, it gets the right location link:
                         String linkString =String.valueOf(walkDetails.get(finalWalk+"_link"));
+                        // construct a link string:
                         String linkedText = "<b>Google Maps:</b>  Click " +
                                 String.format("<a href=\"%s\">here</a> ", linkString) +
                                 "to see the walk location.";
-                        mapLink.setText(Html.fromHtml(linkedText)); // set the link
+                        // display the link and make it work:
+                        mapLink.setText(Html.fromHtml(linkedText));
                         mapLink.setMovementMethod(LinkMovementMethod.getInstance());
 
                     } else {

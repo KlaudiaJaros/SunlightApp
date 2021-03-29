@@ -32,8 +32,8 @@ public class SettingsActivity extends AppCompatActivity {
     // to store user settings:
     private String userName ;
     private String target ;
-    private String notificationsEnabled="true"; //default
-    private int notificationTime=11;
+    private String notificationsEnabled="true";
+    private int notificationTime=11; // default
     // filename where all user settings are stored:
     private final String filename = "userSettings.csv";
 
@@ -57,6 +57,10 @@ public class SettingsActivity extends AppCompatActivity {
             notificationsEnabled=UserSettings.getNotificationsEnabled();
             notificationTime=UserSettings.getNotificationTime();
         }
+        else{
+            userName="";
+            target="0";
+        }
 
         // get access to layout fields and switch:
         EditText userNameText= (EditText)findViewById(R.id.userNameValue);
@@ -65,18 +69,16 @@ public class SettingsActivity extends AppCompatActivity {
         Spinner notificationTimeSpinner = (Spinner)findViewById(R.id.notificationTime);
         TextView notifyText = (TextView)findViewById(R.id.notifyText);
 
-       // String[] times = {"0:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00",
-                            //"16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"};
-
+        // populate spinner with the notification times from the string resource:
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.times_array, R.layout.my_spinner);
-        // Specify the layout to use when the list of choices appears
+        // Specify the layout to use when the list of choices appears:
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
+        // Apply the adapter to the spinner:
         notificationTimeSpinner.setAdapter(adapter);
-        notificationTimeSpinner.setSelection(notificationTime); // default notification time
 
         // set everything according to the existing user settings (if not null):
+        notificationTimeSpinner.setSelection(notificationTime); // if null, sets to 11 - default time
         if (userName!=null){
             userNameText.setText(userName);
         }
@@ -89,10 +91,12 @@ public class SettingsActivity extends AppCompatActivity {
         }
         else{
             notificationsSwitch.setChecked(false);
+            // if notifications are off, do not display notification time setting:
             notifyText.setVisibility(TextView.INVISIBLE);
             notificationTimeSpinner.setVisibility(Spinner.INVISIBLE);
         }
 
+        // specify what happens if the user toggles the notification switch:
         notificationsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -104,10 +108,8 @@ public class SettingsActivity extends AppCompatActivity {
                     notifyText.setVisibility(TextView.VISIBLE);
                     notificationTimeSpinner.setVisibility(Spinner.VISIBLE);
                 }
-
             }
         });
-
 
         File path = this.getFilesDir(); // path to UserData where user settings are saved
 
@@ -120,79 +122,52 @@ public class SettingsActivity extends AppCompatActivity {
                 String userNameEdit=userNameText.getText().toString();
                 String targetEdit= userTargetText.getText().toString();
 
-                // booleans to check if the settings have changed and if the input is valid:
-                boolean newUsername = false, newTarget = false, validUsername=false, validTarget=false;
+                // booleans to check if the input is valid:
+                boolean validUsername=false, validTarget=false;
 
-                // check if username needs saving/updating, if yes, validate input:
-                if (userName!=null && userNameEdit!=null){
-                    newUsername = !userName.equals(userNameEdit); // compare existing username to the one in EditText
-                    validUsername = userNameEdit.length()>=0 && userNameEdit.length()<=11 ;
-                }
-                else if(userNameEdit!=null){ // no existing username, only validate input
-                    newUsername=true;
-                    validUsername = userNameEdit.length()>=0 && userNameEdit.length()<=11 ;
-                }
+                validUsername = userNameEdit.length()>=0 && userNameEdit.length()<=11 ;
+                validTarget = targetEdit.length()>=0 && targetEdit.length()<=3  && TextUtils.isDigitsOnly(targetEdit);
 
-                // check if target needs saving/updating, if yes, validate input:
-                if (target!=null && targetEdit!=null){
-                    newTarget = !target.equals(targetEdit); // compare existing target to the one in EditText
-                    validTarget = targetEdit.length()>=0 && targetEdit.length()<=3  && TextUtils.isDigitsOnly(targetEdit);
-                }
-                else if(targetEdit!=null){ // no existing target, just validate the new one
-                    newTarget=true;
-                    validTarget = targetEdit.length()>=0 && targetEdit.length()<=3  && TextUtils.isDigitsOnly(targetEdit);
-                }
-
-                // check if notification setting needs updating:
-                boolean newNotification = false;
-                String newNotificationSetting = "false";
                 if (notificationsSwitch.isChecked()){
-                    newNotificationSetting="true";
+                    notificationsEnabled="true";
                     DeviceBootReceiver.notificationEnabled=true;
                 }
                 else{
                     DeviceBootReceiver.notificationEnabled=false;
-                }
-                if (!newNotificationSetting.equals(notificationsEnabled)){ // compare existing setting to the actual one
-                    notificationsEnabled=newNotificationSetting;
-                    newNotification=true;
-                }
-                if(notificationTime!=notificationTimeSpinner.getSelectedItemPosition()){
-                    newNotification=true;
-                    // set the new notification time with the Alarm Manager:
-                    //changeAlarmManagerTime(notificationTimeSpinner.getSelectedItemPosition());
+                    notificationsEnabled="false";
                 }
 
-                // save the new/updated settings:
-                if (newUsername || newTarget || newNotification){
-                    if (validUsername && validTarget){
+                // save settings if user input is valid:
+                if (validUsername && (validTarget || targetEdit.length()==0)){
+                    try {
+                        userName=userNameEdit;
+                        target=targetEdit;
+                        if(target.equals("000") || target.equals("00")){
+                            target="0";
+                        }
+                        notificationTime= notificationTimeSpinner.getSelectedItemPosition();
+
+                        // string to be save to the userSettings file:
+                        String toSave = userName+","+target+','+notificationsEnabled+','+notificationTime;
+                        // update the hour in the DeviceBootReceiver:
+                        DeviceBootReceiver.hour=notificationTime;
+
+                        // create a file:
+                        File file = new File(path, filename);
+                        // Open a FileOutputStream to write to a file:
+                        FileOutputStream fos = null;
                         try {
-                            userName=userNameEdit;
-                            target=targetEdit;
-                            notificationTime= notificationTimeSpinner.getSelectedItemPosition();
-                            String toSave = userName+","+target+','+notificationsEnabled+','+notificationTime;
-                            DeviceBootReceiver.hour=notificationTime;
-
-                            // create a file:
-                            File file = new File(path, filename);
-                            // Open a FileOutputStream to write to a file:
-                            FileOutputStream fos = null;
-                            try {
-                                fos = new FileOutputStream(file);
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            }
-
-                            fos.write(toSave.getBytes());
-                            fos.flush();
-                            returnToMain();
-                        } catch (Exception e) {
+                            fos = new FileOutputStream(file);
+                        } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
+
+                        fos.write(toSave.getBytes());
+                        fos.flush();
+                        returnToMain();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                }
-                else{ // no new setting detected
-                    Toast.makeText(getBaseContext(), "Nothing to save", Toast.LENGTH_LONG).show();
                 }
 
                 // display information for the user if their input was incorrect:
@@ -200,7 +175,7 @@ public class SettingsActivity extends AppCompatActivity {
                     String warning="Your name cannot be longer than 11 characters.";
                     Toast.makeText(getBaseContext(),warning, Toast.LENGTH_LONG).show();
                 }
-                if (!TextUtils.isDigitsOnly(target)){
+                if (!TextUtils.isDigitsOnly(target) && target.length()>0){
                     String warning="Your target must contain digits only.";
                     Toast.makeText(getBaseContext(),warning, Toast.LENGTH_LONG).show();
                 }
@@ -221,24 +196,4 @@ public class SettingsActivity extends AppCompatActivity {
      * Changes the alarm manager time used to display notifications
      * @param newTime
      */
-/*
-    private void changeAlarmManagerTime(int newTime){
-
-        Intent intent = new Intent(this, AlarmReceiver.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        // create an Alarm Manager and set the alarm time:
-        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, newTime);
-        calendar.set(Calendar.MINUTE, 1);
-        calendar.set(Calendar.SECOND, 1);
-
-        manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, pendingIntent);
-    }
-
- */
 }

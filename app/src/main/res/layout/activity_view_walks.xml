@@ -24,92 +24,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewWalksTextView">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/targetStr"
-                    android:fontFamily="@font/marcellus"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="25dp"/>
-                <TextView
-                    android:id="@+id/dailyTargetValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:fontFamily="@font/marcellus"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="5dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/minStr"
-                    android:fontFamily="@font/marcellus"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="4dp"/>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/todayDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/todayStr"
-                android:fontFamily="@font/marcellus"
-                android:textSize="18sp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="5dp"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/walkedForStr"
-                    android:fontFamily="@font/marcellus"
-                    android:textSize="18sp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="25dp"/>
-
-                <TextView
-                    android:id="@+id/actualTargetValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:fontFamily="@font/marcellus"
-                    android:textSize="18sp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="5dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/minStr"
-                    android:fontFamily="@font/marcellus"
-                    android:textSize="18sp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="4dp"/>
-
-
-
-            </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -118,47 +42,134 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/achievedStr"
+                android:layout_marginLeft="25dp"
                 android:fontFamily="@font/marcellus"
-                android:textSize="18sp"
+                android:text="@string/targetStr"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/dailyTargetValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:fontFamily="@font/marcellus"
+                android:text=""
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:fontFamily="@font/marcellus"
+                android:text="@string/minStr"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/todayDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/marcellus"
+            android:text="@string/todayStr"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginLeft="25dp"/>
+                android:fontFamily="@font/marcellus"
+                android:text="@string/walkedForStr"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/actualTargetValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/marcellus"
+                android:text="0"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/marcellus"
+                android:text="@string/minStr"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/marcellus"
+                android:text="@string/achievedStr"
+                android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/targetAchieved"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/notYetStr"
-                android:fontFamily="@font/marcellus"
-                android:textSize="18sp"
+                android:layout_marginLeft="2dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginLeft="2dp"/>
-
-        </LinearLayout>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="20dp"
-                android:onClick="editWalkButtonOnClick"
-                android:text="@string/editWalkStr" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/historyStr"
-                android:layout_marginTop="20dp"
                 android:fontFamily="@font/marcellus"
-                android:textSize="23sp"
-                android:layout_marginLeft="25dp"/>
+                android:text="@string/notYetStr"
+                android:textSize="18sp" />
 
-            <ListView
-                android:id="@+id/walksHistoryList"
-                android:layout_width="wrap_content"
-                android:layout_height="330dp"
-                android:layout_margin="10dp" />
         </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:onClick="editWalkButtonOnClick"
+            android:text="@string/editWalkStr" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/marcellus"
+            android:text="@string/historyStr"
+            android:textSize="23sp" />
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/walksHistoryList"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

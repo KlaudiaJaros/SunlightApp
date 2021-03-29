@@ -8,15 +8,18 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 /**
- * Class to display notifications at a specified time
+ * Class to display notifications at a specified time - called at the set time
  */
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
+        // set intent to show notification and open if the user clicks on the notification:
+        Intent alarmIntent = new Intent(context, MainActivity.class);
+        alarmIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        // set the notification text:
         String contentStr=context.getString(R.string.dailyReminderContentStr);
         String titleStr = context.getString(R.string.dailyReminderStr);
 
@@ -26,16 +29,15 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setContentTitle(titleStr)
                 .setContentText(contentStr)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                // Set the intent that will fire when the user taps the notification
+                // Set the intent that will fire when the user taps the notification:
                 .setContentIntent(pendingIntent)
+                // make the notification expand so that all the text can be visible:
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(contentStr))
                 .setAutoCancel(true);
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-
-        // notificationId is a unique int for each notification that you must define
         // build notification:
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(1, builder.build());
     }
 }

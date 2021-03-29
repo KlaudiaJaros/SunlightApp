@@ -24,7 +24,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -110,9 +109,13 @@ public class MainActivity extends AppCompatActivity {
             String displayWelcome=this.getResources().getString((R.string.welcomeStr))+" "+ UserSettings.getUserName();
             welcomeString.setText(displayWelcome);
         }
-        if(UserSettings.getTarget()!=null)
+        if(UserSettings.getTarget()!=null && UserSettings.getTarget().length()>0)
         {
             targetValue.setText(UserSettings.getTarget());
+        }
+        else
+        {
+            targetValue.setText("0");
         }
 
         // display if the target was achieved:
@@ -228,35 +231,30 @@ public class MainActivity extends AppCompatActivity {
         }
 
         /* Notifications: */
-        // create an Alarm Manager and set the alarm time:
+        // create an Alarm Manager and the intents:
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlarmReceiver.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
+        // if the user enabled notifications:
         if (UserSettings.getNotificationsEnabled().equals("true")){
 
+            // create a notification channel:
             createNotificationChannel();
             DeviceBootReceiver.notificationEnabled=true;
 
-            // run this only the first time you open the app:
-            //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            //if (!prefs.getBoolean("firstTime", false)) {
+            // set the time based on the user setting:
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.set(Calendar.HOUR_OF_DAY, UserSettings.getNotificationTime());
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(System.currentTimeMillis());
-                calendar.set(Calendar.HOUR_OF_DAY, UserSettings.getNotificationTime());
-                calendar.set(Calendar.MINUTE, 0);
-                calendar.set(Calendar.SECOND, 0);
-
-                manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+            // set the alarm:
+            manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                         AlarmManager.INTERVAL_DAY, pendingIntent);
 
-                // set first time to true:
-               // SharedPreferences.Editor editor = prefs.edit();
-               // editor.putBoolean("firstTime", true);
-               // editor.apply();
-            //}
         }
         // if notifications are off, cancel the alarm manager:
         else{
